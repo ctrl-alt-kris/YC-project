@@ -72,7 +72,7 @@ const Dashboard = () => {
                             <td>{item.Volume}</td>
                             <td>{item.CostPrice}</td>
                             <td>{closingPrices!== undefined && closingPrices[item.Symbol]}</td>
-                            <td>{((closingPrices!== undefined ? (closingPrices[item.Symbol]-(item.CostPrice)):0) / (item.CostPrice))}%</td>
+                            <td>{Math.round(((closingPrices!== undefined ? (closingPrices[item.Symbol]-(item.CostPrice)):0) / (item.CostPrice)*100))}%</td>
                         </tr>
                         )
                         }
