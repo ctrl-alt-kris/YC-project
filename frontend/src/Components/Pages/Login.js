@@ -9,9 +9,8 @@ const Login = (props) => {
 
     const submitHandler = (event) => {
         event.preventDefault()
-
-
-        // props.setToken(username+password)
+        let data = {username, password}
+        props.login(data)
     }
 
     console.log(username, password)
