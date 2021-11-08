@@ -1,0 +1,52 @@
+[
+    {
+      "Symbol": "AAPL",
+      "Cost Price": "110,98",
+      "Volume": 5
+    },
+    {
+      "Symbol": "TSLA",
+      "Cost Price": "956,43",
+      "Volume": 3
+    },
+    {
+      "Symbol": "MVIS",
+      "Cost Price": "20,98",
+      "Volume": 56
+    },
+    {
+      "Symbol": "AMD",
+      "Cost Price": "121,34",
+      "Volume": 12
+    },
+    {
+      "Symbol": "ABT",
+      "Cost Price": "107,67",
+      "Volume": 16
+    },
+    {
+      "Symbol": "ETH",
+      "Cost Price": "4367,09",
+      "Volume": "0,25"
+    },
+    {
+      "Symbol": "BTC",
+      "Cost Price": "43567,56",
+      "Volume": "0,01"
+    },
+    {
+      "Symbol": "GME",
+      "Cost Price": "228,94",
+      "Volume": 3
+    },
+    {
+      "Symbol": "CLOV",
+      "Cost Price": "7,67",
+      "Volume": 67
+    },
+    {
+      "Symbol": "WCLD",
+      "Cost Price": "12,35",
+      "Volume": 45
+    }
+  ]
