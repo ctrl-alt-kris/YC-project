@@ -1,18 +1,30 @@
 
+import { useState } from "react"
 import "./Login.css"
 
-const Login = () => {
+const Login = (props) => {
+    
+    const [username, setUsername] = useState()
+    const [password, setPassword] = useState()
 
+    const submitHandler = (event) => {
+        event.preventDefault()
+
+
+        // props.setToken(username+password)
+    }
+
+    console.log(username, password)
     return(
-        <div className="col-12">
-            <div className="card col-2 box">
-                <form onsubmit="event.preventDefault()" >
+        <div className="d-flex justify-content-center">
+            <div className="card box">
+                <form onSubmit={submitHandler} >
                     <h1>Login</h1>
                     <p className="text-muted"> Please enter your login and password!</p> 
-                    <input type="text" name="" placeholder="Username"/> 
-                    <input type="password" name="" placeholder="Password"/> 
-                    <a className="forgot text-muted" href="#">Forgot password?</a> 
-                    <input type="submit" name="" value="Login" href="#"/>
+                    <input type="text" name="" placeholder="Username" onChange={e => setUsername(e.target.value)}/> 
+                    <input type="password" name="" placeholder="Password" onChange={e => setPassword(e.target.value)}/> 
+                    <a className="forgot text-muted" >Forgot password?</a> 
+                    <input type="submit" name="" value="Login" />
                 </form>
             </div>
         </div>

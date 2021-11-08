@@ -1,9 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background:#557a95
-}
+
 
 .card {
     margin-bottom: 20px;
@@ -11,6 +6,8 @@ body {
 }
 
 .box {
+    width: 500px;
+    border-radius: 25px;
     padding: 40px;
     background: #ffffff;
     text-align: center;
@@ -25,11 +22,11 @@ body {
     display: block;
     margin: 20px auto;
     text-align: center;
-    border: 2px solid #3498db;
+    border: 2px solid #7395AE;
     padding: 10px 10px;
     width: 250px;
     outline: none;
-    color: white;
+    color: black;
     border-radius: 24px;
     transition: 0.25s
 }
