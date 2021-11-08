@@ -2,7 +2,7 @@
 A platform which allows investors to assess their investments.
 
 To generate an API-key, go the following url:
-https://www.alphavantage.co/support/#api-key
+https://finnhub.io/dashboard
 
 
 # Frontend
