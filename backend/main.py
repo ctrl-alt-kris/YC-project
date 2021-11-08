@@ -28,43 +28,59 @@ finnhub_client = finnhub.Client(api_key=API_KEY)
 # print("Closing price: ", closing_price)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
 ### USERS ####
 @app.post("/post_user", tags=['user'])
 async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    return models.User.create(db, **user.dict())
+    return crud.add(user, models.User, db)
 
 
 @app.get("/get_user", tags=['user'], response_model=schemas.User)
 async def get_user(id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found.")
-    return user
+    return crud.get(id, models.User, db)
 
 
-@app.put('/edit_user', tags=['user'])
-async def edit_user(request: schemas.User, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == request.id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_424_FAILED_DEPENDENCY, detail=f'User with id {request.id} not found.')
-    user.update(request.dict(), synchronize_session=False)
-    db.commit()
-    return 'User updated.'
+@app.patch('/edit_user', response_model=schemas.User, tags=['user'])
+async def edit_user(id: int, request: schemas.UserUpdate, db: Session = Depends(get_db)):
+    return crud.edit(id, request, models.User, db)
 
 
 @app.delete('/delete_user', tags=['user'])
 async def delete_user(id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found.")
-    db.delete(user)
-    db.commit()
-    return 'User deleted.'
+    return crud.delete(id, models.User, db).dict()
+
+
+
+# @app.post("/post_user", tags=['user'])
+# async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+#     return models.User.create(db, **user.dict())
+
+
+# @app.get("/get_user", tags=['user'])
+# async def get_user(id: int, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(models.User.id == id).first()
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found.")
+#     return user
+
+
+# @app.put('/edit_user', tags=['user'])
+# async def edit_user(request: schemas.User, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(models.User.id == request.id).first()
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_424_FAILED_DEPENDENCY, detail=f'User with id {request.id} not found.')
+#     user.update(request.dict(), synchronize_session=False)
+#     db.commit()
+#     return 'User updated.'
+
+
+# @app.delete('/delete_user', tags=['user'])
+# async def delete_user(id: int, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(models.User.id == id).first()
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found.")
+#     db.delete(user)
+#     db.commit()
+#     return 'User deleted.'
 
 @app.get('/portfolio/{portfolio_id}/transactions',response_model=List[schemas.Transaction])
 async def get_transactions_by_portfolio(portfolio_id: int, db: Session = Depends(get_db)):
