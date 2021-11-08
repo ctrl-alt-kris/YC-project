@@ -19,7 +19,7 @@ function App() {
   }
 
   if(!auth) {
-    return <Login setToken={login} />
+    return <Login login={login} />
   }
 
 
