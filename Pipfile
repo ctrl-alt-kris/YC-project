@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 passlib = "*"
 bcrypt = "*"
-pandas = "*"
 sqlmodel = "*"
 
 [dev-packages]
