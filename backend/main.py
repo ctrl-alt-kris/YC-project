@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException, status
+from typing import List
 from sqlalchemy.orm import Session
 import finnhub
 from .database import get_db, engine
@@ -46,26 +47,69 @@ async def edit_user(id: int, request: schemas.UserUpdate, db: Session = Depends(
 
 @app.delete('/delete_user', tags=['user'])
 async def delete_user(id: int, db: Session = Depends(get_db)):
-    return crud.delete(id, models.User, db)
+    return crud.delete(id, models.User, db).dict()
 
 
-### PORTFOLIO ###
+
+# @app.post("/post_user", tags=['user'])
+# async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+#     return models.User.create(db, **user.dict())
+
+
+# @app.get("/get_user", tags=['user'])
+# async def get_user(id: int, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(models.User.id == id).first()
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found.")
+#     return user
+
+
+# @app.put('/edit_user', tags=['user'])
+# async def edit_user(request: schemas.User, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(models.User.id == request.id).first()
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_424_FAILED_DEPENDENCY, detail=f'User with id {request.id} not found.')
+#     user.update(request.dict(), synchronize_session=False)
+#     db.commit()
+#     return 'User updated.'
+
+
+# @app.delete('/delete_user', tags=['user'])
+# async def delete_user(id: int, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(models.User.id == id).first()
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found.")
+#     db.delete(user)
+#     db.commit()
+#     return 'User deleted.'
 
 @app.post("/post_portfolio", tags=['portfolio'])
 async def add_new_portfolio(portfolio: schemas.PortfolioCreate, db: Session = Depends(get_db)):
-    return crud.add(portfolio, models.Portfolio, db)
-
+    return crud.add(schema=portfolio, model=models.Portfolio, db=db)
 
 @app.get("/get_portfolio", tags=['portfolio'])
 async def get_portfolio(id: int, db: Session = Depends(get_db)):
     return crud.get(id, models.Portfolio, db)
 
-
 @app.patch('/edit_portfolio', response_model=schemas.Portfolio, tags=['portfolio'])
 async def edit_portfolio(id: int, request: schemas.PortfolioUpdate, db: Session = Depends(get_db)):
     return crud.edit(id, request, models.Portfolio, db)
 
-
 @app.delete('/delete_portfolio', tags=['portfolio'])
 async def delete_portfolio(id: int, db: Session = Depends(get_db)):
     return crud.delete(id, models.Portfolio, db)
+
+@app.get('/portfolio/{portfolio_id}/transactions',response_model=List[schemas.Transaction])
+async def get_transactions_by_portfolio(portfolio_id: int, db: Session = Depends(get_db)):
+    transactions = crud.get_transactions_from_portfolio(db=db, portfolio_id=portfolio_id)
+    return transactions
+
+@app.post('/portfolio/{portfolio_id}/add-transaction', response_model=schemas.Transaction)
+async def add_transaction(portfolio_id: int, transaction: schemas.TransactionCreate, db: Session = Depends(get_db)):
+    transaction = crud.add(db=db, schema=transaction, model=models.Transaction, portfolio_id=portfolio_id)
+    return transaction
+
+@app.delete('/transaction/{transaction_id}')
+async def remove_transaction(transaction_id: int,  db: Session = Depends(get_db)):
+    transaction = crud.delete(db=db, id=transaction_id, model=models.Transaction)
+    return transaction
