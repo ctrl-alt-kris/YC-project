@@ -2,8 +2,8 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 import finnhub
-from database import get_db, engine
-import schemas, models
+from .database import get_db, engine
+from . import schemas, models
 
 models.Base.metadata.create_all(engine)
 from dotenv import load_dotenv
