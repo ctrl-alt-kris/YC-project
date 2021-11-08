@@ -5,3 +5,6 @@
 
 .Pipfile
 .Pipfile.lock
+
+# environment variables
+/backend/.env
