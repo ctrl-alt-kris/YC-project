@@ -38,7 +38,7 @@ class User(Base):
     email = sa.Column(sa.String, index=True)
     password = sa.Column(sa.String, index=True)
 
-    # portfolios = relationship("Portfolio", back_populates="users")
+    portfolios = relationship("Portfolio", back_populates="users")
 
 
     @classmethod
@@ -53,19 +53,16 @@ class User(Base):
 
 
 
-# class Portfolio(Base):
-#     portoflio_type = sa.Column(sa.String, nullable=False)
-#     user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
+class Portfolio(Base):
+    portoflio_type = sa.Column(sa.String, nullable=False)
+    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
     
-#     users = relationship("User", back_populates="portfolios")
-#     transactions = relationship("Transaction", back_populates="portfolios")
+    users = relationship("User", back_populates="portfolios")
+    transactions = relationship("Transaction", back_populates="portfolio")
 
-#     def get_value(self):
-#         return sum(t.amount for t in self.transactions)
+    def get_value(self):
+        return sum(t.amount for t in self.transactions)
 
-#     @property
-#     def owner(self):
-#         return self.user.email
 
 class Transaction(Base):
     ticker = sa.Column(sa.String, nullable=False)
