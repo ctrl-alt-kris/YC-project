@@ -4,7 +4,7 @@ from sqlalchemy.sql import schema
 from sqlalchemy.sql.schema import ForeignKey
 from pydantic import BaseModel
 from typing import Optional
-import schemas
+from . import schemas
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from passlib.context import CryptContext
 
@@ -62,3 +62,16 @@ class User(Base):
 
 #     def get_value(self):
 #         return sum(t.amount for t in self.transactions)
+
+#     @property
+#     def owner(self):
+#         return self.user.email
+
+class Transaction(Base):
+    ticker = sa.Column(sa.String, nullable=False)
+    amount = sa.Column(sa.Integer, nullable=False)
+    value = sa.Column(sa.Float, nullable=False)
+
+    portfolio_id = sa.Column(sa.Integer, ForeignKey("portfolios.id"))
+
+    portfolio = relationship("Portfolio", back_populates="transactions")
