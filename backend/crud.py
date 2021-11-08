@@ -1,7 +1,14 @@
+import sqlalchemy as sa
+from . import models
 from fastapi import HTTPException, status
 
-def add(schema, model, db):
-    return model.create(db, **schema.dict())
+def get_transactions_from_portfolio(db: sa.orm.Session, portfolio_id:int):
+    transactions = db.query(models.Transaction).filter_by(portfolio_id=portfolio_id).all()
+    return transactions
+
+
+def add(schema, model, db, **kwargs):
+    return model.create(db, **schema.dict(), **kwargs)
 
 
 def get(id, model, db):

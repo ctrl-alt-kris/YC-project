@@ -1,5 +1,5 @@
 import pydantic as pd
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 
@@ -25,24 +25,6 @@ class UserUpdate(BaseModel):
     email: Optional[str] = None
 
 
-class PortfolioBase(pd.BaseModel):
-    portfolio_type: str
-    user_id: int
-
-
-class PortfolioCreate(PortfolioBase):
-    pass
-
-
-class Portfolio(PortfolioBase):
-    id: Optional[int]
-
-
-class PortfolioUpdate(BaseModel):
-    portfolio_type: Optional[str] = None
-    user_id: Optional[int] = None
-
-
 class TransactionBase(pd.BaseModel):
     ticker: str
     amount: int
@@ -58,3 +40,25 @@ class Transaction(TransactionBase):
     
     class Config:
         orm_mode = True
+
+
+class PortfolioBase(pd.BaseModel):
+    portfolio_type: str
+    user_id: int
+
+
+class PortfolioCreate(PortfolioBase):
+    pass
+
+
+class Portfolio(PortfolioBase):
+    id: Optional[int]
+    transactions: List[Transaction] = []
+
+    class Config:
+        orm_mode = True
+        
+
+class PortfolioUpdate(BaseModel):
+    portfolio_type: Optional[str] = None
+    user_id: Optional[int] = None
