@@ -89,10 +89,10 @@ async def get_transactions_by_portfolio(portfolio_id: int, db: Session = Depends
 
 @app.post('/portfolio/{portfolio_id}/add-transaction', response_model=schemas.Transaction)
 async def add_transaction(portfolio_id: int, transaction: schemas.TransactionCreate, db: Session = Depends(get_db)):
-    transaction = crud.create_transaction(db=db, transaction=transaction, portfolio_id=portfolio_id)
+    transaction = crud.add(db=db, schema=transaction, model=models.Transaction, portfolio_id=portfolio_id)
     return transaction
 
 @app.delete('/transaction/{transaction_id}')
 async def remove_transaction(transaction_id: int,  db: Session = Depends(get_db)):
-    transaction = crud.remove_transaction(db=db, transaction_id=transaction_id)
+    transaction = crud.delete(db=db, id=transaction_id, model=models.Transaction)
     return transaction
