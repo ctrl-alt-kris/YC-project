@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-# import finnhub
+import finnhub
 from database import get_db, engine
 import schemas, models
 
@@ -11,15 +11,15 @@ app = FastAPI()
 finnhub_api = "c64eft2ad3i8bn4fjpn0"
 
 # Setup client
-# finnhub_client = finnhub.Client(api_key=finnhub_api)
+finnhub_client = finnhub.Client(api_key=finnhub_api)
 
 # Quote
-# quote = finnhub_client.quote('AAPL')
-# current_price = quote["c"]
-# closing_price = quote["pc"]
+quote = finnhub_client.quote('AAPL')
+current_price = quote["c"]
+closing_price = quote["pc"]
 
-# print("Current Price:", current_price)
-# print("Closing price: ", closing_price)
+print("Current Price:", current_price)
+print("Closing price: ", closing_price)
 
 
 @app.get("/")

@@ -30,6 +30,7 @@ class Base(declarative_base()):
 
         return obj # need to return the obj
 
+
 class User(Base):
     username = sa.Column(sa.String, unique=True, index=True)
     firstName = sa.Column(sa.String, index=True)
@@ -53,7 +54,7 @@ class User(Base):
 
 
 # class Portfolio(Base):
-#     name = sa.Column(sa.String, nullable=False)
+#     portoflio_type = sa.Column(sa.String, nullable=False)
 #     user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
     
 #     users = relationship("User", back_populates="portfolios")
@@ -61,7 +62,3 @@ class User(Base):
 
 #     def get_value(self):
 #         return sum(t.amount for t in self.transactions)
-
-#     @property
-#     def owner(self):
-#         return self.user.email
