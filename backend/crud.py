@@ -1,12 +1,7 @@
-import sqlalchemy as sa
-
-from . import models
 from fastapi import HTTPException, status
 
-
-
-def add(schema, model, db, **kwargs):
-    return model.create(db, **schema.dict(), **kwargs)
+def add(schema, model, db):
+    return model.create(db, **schema.dict())
 
 
 def get(id, model, db):

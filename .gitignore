@@ -10,4 +10,3 @@ sql_app.db
 
 # environment variables
 /backend/.env
-/backend/__pycache__

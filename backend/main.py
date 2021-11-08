@@ -1,15 +1,14 @@
 from fastapi import FastAPI, Depends
-from typing import List
 from sqlalchemy.orm import Session
 import finnhub
 from .database import get_db, engine
-from . import schemas, models, crud
-import os
-from dotenv import load_dotenv
+from . import schemas, models
+from . import crud
 
 models.Base.metadata.create_all(engine)
-
+from dotenv import load_dotenv
 load_dotenv('.env')
+import os
 
 app = FastAPI()
 
@@ -37,7 +36,7 @@ async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.add(user, models.User, db)
 
 
-@app.get("/get_user", tags=['user'], response_model=schemas.User)
+@app.get("/get_user", tags=['user'])
 async def get_user(id: int, db: Session = Depends(get_db)):
     return crud.get(id, models.User, db)
 
@@ -54,8 +53,9 @@ async def delete_user(id: int, db: Session = Depends(get_db)):
 
 ### PORTFOLIO ###
 
-
-
+@app.post("/post_portfolio", tags=['portfolio'])
+async def add_new_portfolio(portfolio: schemas.PortfolioCreate, db: Session = Depends(get_db)):
+    return crud.add(portfolio, models.Portfolio, db)
 
 @app.get("/get_portfolio", tags=['portfolio'])
 async def get_portfolio(id: int, db: Session = Depends(get_db)):
@@ -74,19 +74,4 @@ async def delete_portfolio(id: int, db: Session = Depends(get_db)):
 
 ### TRANSACTIONS ###
 
-@app.get('/portfolio/{portfolio_id}/transactions', response_model=List[schemas.Transaction])
-async def get_transactions_by_portfolio(portfolio_id: int, db: Session = Depends(get_db)):
-    transactions = crud.get_transactions_from_portfolio(db=db, portfolio_id=portfolio_id)
-    return transactions
 
-
-@app.post('/portfolio/{portfolio_id}/add-transaction', response_model=schemas.Transaction)
-async def add_transaction(portfolio_id: int, transaction: schemas.TransactionCreate, db: Session = Depends(get_db)):
-    transaction = crud.add(db=db, schema=transaction, model=models.Transaction, portfolio_id=portfolio_id)
-    return transaction
-
-
-@app.delete('/transaction/{transaction_id}')
-async def remove_transaction(transaction_id: int,  db: Session = Depends(get_db)):
-    transaction = crud.delete(db=db, id=transaction_id, model=models.Transaction)
-    return transaction
