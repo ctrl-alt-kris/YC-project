@@ -35,4 +35,9 @@ class PortfolioCreate(PortfolioBase):
 
 
 class Portfolio(PortfolioBase):
-    id: int
+    id: Optional[int]
+
+
+class PortfolioUpdate(BaseModel):
+    portfolio_type: Optional[str] = None
+    user_id: Optional[int] = None

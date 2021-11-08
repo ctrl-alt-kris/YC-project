@@ -1,10 +1,6 @@
 import sqlalchemy as sa
 from sqlalchemy.orm import Session, relationship
-from sqlalchemy.sql import schema
 from sqlalchemy.sql.schema import ForeignKey
-from pydantic import BaseModel
-from typing import Optional
-from . import schemas
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from passlib.context import CryptContext
 
@@ -54,7 +50,7 @@ class User(Base):
 
 
 class Portfolio(Base):
-    portoflio_type = sa.Column(sa.String, nullable=False)
+    portfolio_type = sa.Column(sa.String, nullable=False)
     user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
     
     users = relationship("User", back_populates="portfolios")
