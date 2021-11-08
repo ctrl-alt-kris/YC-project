@@ -4,11 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = {extras = ["all"], version = "*"}
-sqlalchemy = "*"
 passlib = "*"
-python-dotenv = "*"
-finnhub-python = "*"
+bcrypt = "*"
 
 [dev-packages]
 

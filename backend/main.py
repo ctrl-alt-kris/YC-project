@@ -1,14 +1,20 @@
+
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-# import finnhub
-from database import get_db, engine
-import schemas, models
+import finnhub
+from .database import get_db, engine
+from . import schemas, models
 
 models.Base.metadata.create_all(engine)
+from dotenv import load_dotenv
+load_dotenv('.env')
+import os
 
 app = FastAPI()
+API_KEY = os.getenv('API_KEY')
+finnhub_client = finnhub.Client(api_key=API_KEY)
 
-finnhub_api = "c64eft2ad3i8bn4fjpn0"
+# finnhub_api = "c64eft2ad3i8bn4fjpn0"
 
 # Setup client
 # finnhub_client = finnhub.Client(api_key=finnhub_api)
