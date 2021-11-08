@@ -46,20 +46,8 @@ class PortfolioUpdate(BaseModel):
     portfolio_type: Optional[str] = None
     user_id: Optional[int] = None
     
-
     class Config:
         orm_mode = True
 
-class TransactionBase(pd.BaseModel):
-    ticker: str
-    amount: int
-    value: float
 
-class TransactionCreate(TransactionBase):
-    pass
 
-class Transaction(TransactionBase):
-    portfolio_id: int
-    
-    class Config:
-        orm_mode = True
