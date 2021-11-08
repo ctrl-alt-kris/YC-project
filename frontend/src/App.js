@@ -4,6 +4,7 @@ import Login from './Components/Pages/Login';
 import Home from './Components/Pages/Home';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { useState } from 'react';
+import Upload from './Components/Pages/Upload';
 
 
 export const TokenContext = React.createContext(null);
@@ -28,7 +29,9 @@ function App() {
     
       <Router>
         <Routes>
+        <Route path="/upload" element={<Upload />}/>
           <Route path="/" element={<Home />}/>
+
         </Routes>
       </Router>
      
