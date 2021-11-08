@@ -14,7 +14,7 @@ app = FastAPI()
 API_KEY = os.getenv('API_KEY')
 finnhub_client = finnhub.Client(api_key=API_KEY)
 
-finnhub_api = "c64eft2ad3i8bn4fjpn0"
+# finnhub_api = "c64eft2ad3i8bn4fjpn0"
 
 # Setup client
 # finnhub_client = finnhub.Client(api_key=finnhub_api)
