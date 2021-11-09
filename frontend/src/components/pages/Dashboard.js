@@ -82,10 +82,15 @@ const Dashboard = () => {
 
     return(
         
-            <div className="d-flex justify-content-center">
-            <div className="card col-10 box">
+            <div className="container">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        Portfolio overview
+                    </div>
+                </div>
             <div className="row">
-                <div className="col">
+                <div className="col-6">
+                    <div className="card mt-2">
                     <table className="table caption-top">
                         <caption>Stocks / ETFs (price in $)</caption>
                         <thead className="table-dark">
@@ -112,8 +117,10 @@ const Dashboard = () => {
                             )}
                         </tbody>
                     </table>
+                    </div>
                 </div>
-                <div className="col">
+                <div className="col-6">
+                    <div className="card mt-2">
                     <table className="table caption-top">
                         <caption>Crypto Currencies (price in $)</caption>
                         <thead className="table-dark">
@@ -140,10 +147,11 @@ const Dashboard = () => {
                             )}
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
+        
         
     )
 
