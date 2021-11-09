@@ -9,7 +9,9 @@ def get_transactions_from_portfolio(db: sa.orm.Session, portfolio_id:int):
     return transactions
 
 def add(schema, model, db, **kwargs):
-    return model.create(db, **schema.dict(), **kwargs)
+    if schema is not None:
+        return model.create(db, **schema.dict(), **kwargs)
+    return model.create(db, **kwargs)
 
 
 def get(id, model, db):

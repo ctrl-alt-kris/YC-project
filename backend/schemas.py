@@ -27,7 +27,7 @@ class UserUpdate(BaseModel):
 
 class TransactionBase(pd.BaseModel):
     ticker: str
-    amount: int
+    amount: float
     value: float
 
 class TransactionCreate(TransactionBase):

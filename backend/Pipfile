@@ -9,6 +9,8 @@ sqlalchemy = "*"
 passlib = "*"
 python-dotenv = "*"
 finnhub-python = "*"
+aiofiles = "*"
+pandas = "*"
 
 [dev-packages]
 

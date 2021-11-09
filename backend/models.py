@@ -66,7 +66,7 @@ class Portfolio(Base):
 
 class Transaction(Base):
     ticker = sa.Column(sa.String, nullable=False)
-    amount = sa.Column(sa.Integer, nullable=False)
+    amount = sa.Column(sa.Float, nullable=False)
     value = sa.Column(sa.Float, nullable=False)
 
     portfolio_id = sa.Column(sa.Integer, ForeignKey("portfolios.id"))
