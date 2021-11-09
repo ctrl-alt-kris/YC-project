@@ -27,12 +27,12 @@
     {
       "Symbol": "GOOGL",
       "CostPrice": 4367.09,
-      "Volume": "0,25"
+      "Volume": 0.25
     },
     {
       "Symbol": "BTC",
       "CostPrice": 43567.56,
-      "Volume": "0,01"
+      "Volume": 0.1
     },
     {
       "Symbol": "GME",

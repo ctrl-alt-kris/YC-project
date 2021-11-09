@@ -27,12 +27,12 @@
     {
       "name": "uniswap",
       "CostPrice": 4367.09,
-      "Volume": "0,25"
+      "Volume": 0.25
     },
     {
       "name": "dogecoin",
       "CostPrice": 43567.56,
-      "Volume": "0,01"
+      "Volume": 0.01
     },
     {
       "name": "litecoin",
