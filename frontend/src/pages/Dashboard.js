@@ -80,35 +80,10 @@ const Dashboard = () => {
     }
 
 
-    console.log(cryptoPrices)
-
-    // // sort array of objects by key (for some reason the order changes)
-    // function compare(a, b) {
-        
-    //     const nameA = a.name;
-    //     const nameB = b.name;
-      
-    //     let comparison = 0;
-    //     if (nameA > nameB) {
-    //       comparison = 1;
-    //     } else if (nameA < nameB) {
-    //       comparison = -1;
-    //     }
-    //     return comparison;
-    //   }
-      
-    //   cryptoPrices.sort(compare);
-    //   cryptoData.sort(compare)
-
-       
-    //   console.log(cryptoData)
-
-    
-    // //console.log(cryptoPrices)
-    
-
     return(
-        <div className="container-md">
+        
+            <div className="d-flex justify-content-center">
+            <div className="card col-10 box">
             <div className="row">
                 <div className="col">
                     <table className="table caption-top">
@@ -168,6 +143,8 @@ const Dashboard = () => {
                 </div>
             </div>
         </div>
+        </div>
+        
     )
 
 }
