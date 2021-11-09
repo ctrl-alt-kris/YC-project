@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import aiofiles
 import os 
 import pandas as pd
+from io import StringIO
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 models.Base.metadata.create_all(engine)
@@ -131,14 +132,16 @@ async def remove_transaction(transaction_id: int,  db: Session = Depends(get_db)
 
 @app.post("/upload-csv/{portfolio_id}")
 async def transactions_from_csv(portfolio_id:int,file: UploadFile = File(...),  db: Session = Depends(get_db)):
-    async with aiofiles.open(os.path.join(dir_path,"tmp",file.filename), 'wb') as out_file:
+    file_path = os.path.join(dir_path,file.filename)
+    async with aiofiles.open(file.filename, 'wb') as out_file:
         content = await file.read()  # async read
         await out_file.write(content)  # async write
-        df = pd.read_csv(file.filename, sep=";")
-        formatted_data = df.to_dict('records')
-        for transaction in formatted_data:
-            amount = transaction['Volume'].replace('.','').replace(',','.')
-            value = transaction['Cost Price'].replace('.','').replace(',','.')
-            kwargs = {'ticker': transaction['Symbol'], 'amount': amount, 'value': value, 'portfolio_id':portfolio_id}
-            crud.add(schema=None, model=models.Transaction, db=db, **kwargs)
+    df = pd.read_csv(file.filename, sep=";")
+    formatted_data = df.to_dict('records')
+    for transaction in formatted_data:
+        amount = transaction['Volume'].replace('.','').replace(',','.')
+        value = transaction['Cost Price'].replace('.','').replace(',','.')
+        kwargs = {'ticker': transaction['Symbol'], 'amount': amount, 'value': value, 'portfolio_id':portfolio_id}
+        crud.add(schema=None, model=models.Transaction, db=db, **kwargs)
+    os.remove(file.filename)
     return {"transactions":formatted_data}
