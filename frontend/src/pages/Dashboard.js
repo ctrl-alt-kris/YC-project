@@ -1,12 +1,17 @@
-import mockData from "./mockData.json"
+import mockDataStocks from "./mockDataStocks.json"
+import MockDataCrypto from './MockDataCrypto.json'
 import { useState, useEffect} from 'react'
 
-const stockData = mockData
+const stockData = mockDataStocks
+const cryptoData = MockDataCrypto
 
 // get all symbols in an array
-const symbols = [];
-stockData.forEach(element => symbols.push(element["Symbol"]))
-// console.log({symbols})
+const stockSymbols = [];
+stockData.forEach(element => stockSymbols.push(element["Symbol"]))
+
+const cryptoNames = []
+cryptoData.forEach(element => cryptoNames.push(element["name"]))
+
 
 const apiKey = "c64eft2ad3i8bn4fjpn0"
     
@@ -23,62 +28,145 @@ const Dashboard = () => {
 
     // query for each symbol (company) in portfolio
     const [quotes, setQuotes] = useState({})
+    const [cryptos, setCryptos] = useState({})
+
     useEffect(() => {
-        symbols.forEach( symbol => {
+        stockSymbols.forEach( symbol => {
              finnhubClient.quote(symbol, (error, data, response) => {
                 quotes[symbol] = data;
                 setQuotes({...quotes})
             })
         })
+
+        cryptoNames.forEach(name => {
+            fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${name}&vs_currencies=usd`)
+            .then(response => response.json())
+            .then(data => {
+                
+                cryptos[name] = data
+                setCryptos({...cryptos})
+             }
+            )
+        })
     } , [])
 
-
+    //console.log({cryptos})
     // create object for all closing prices from response
     const closingPrices = {}
     const tickers = []
     const prices = []
 
-    for (let i = 0; i < symbols.length; i++) {
-        if(quotes[symbols[i]]!== undefined) {
-         tickers.push(symbols[i])
-         prices.push(quotes[symbols[i]]['c'])
+    for (let i = 0; i < stockSymbols.length; i++) {
+        if(quotes[stockSymbols[i]]!== undefined) {
+         tickers.push(stockSymbols[i])
+         prices.push(quotes[stockSymbols[i]]['c'])
         
         tickers.forEach((key, i) => closingPrices[key] = prices[i])
         }
     }
     
-    console.log(closingPrices)
-    console.log({stockData})
     
+    // create object for all current crypto prices
+    const cryptoPrices = {}
+    const names = []
+    const cryptoPricesArray = []
+    
+    for (let i = 0; i < cryptoNames.length; i++) {
+        if(cryptos[cryptoNames[i]]!== undefined) {
+            names.push(cryptoNames[i])
+            cryptoPricesArray.push(cryptos[cryptoNames[i]][cryptoNames[i]]["usd"])
+            names.forEach((key, i) => cryptoPrices[key] = cryptoPricesArray[i])
+        }
+    }
+
+
+    console.log(cryptoPrices)
+
+    // // sort array of objects by key (for some reason the order changes)
+    // function compare(a, b) {
+        
+    //     const nameA = a.name;
+    //     const nameB = b.name;
+      
+    //     let comparison = 0;
+    //     if (nameA > nameB) {
+    //       comparison = 1;
+    //     } else if (nameA < nameB) {
+    //       comparison = -1;
+    //     }
+    //     return comparison;
+    //   }
+      
+    //   cryptoPrices.sort(compare);
+    //   cryptoData.sort(compare)
+
+       
+    //   console.log(cryptoData)
 
     
+    // //console.log(cryptoPrices)
+    
+
     return(
-        <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Ticker</th>
-                        <th scope="col">Volume</th>
-                        <th scope="col">Cost Price</th>
-                        <th scope="col">Current Price</th>
-                        <th scope="col">% change</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {stockData!== undefined && stockData.map((item, index) => {
-                        return(
-                        <tr>
-                            <td>{item.Symbol}</td>
-                            <td>{item.Volume}</td>
-                            <td>{item.CostPrice}</td>
-                            <td>{closingPrices!== undefined && closingPrices[item.Symbol]}</td>
-                            <td>{Math.round(((closingPrices!== undefined ? (closingPrices[item.Symbol]-(item.CostPrice)):0) / (item.CostPrice)*100))}%</td>
-                        </tr>
-                        )
-                        }
-                    )}
-                </tbody>
-                </table>
+        <div className="container-md">
+            <div className="row">
+                <div className="col">
+                    <table className="table caption-top">
+                        <caption>Stocks / ETFs (price in $)</caption>
+                        <thead className="table-dark">
+                            <tr>
+                                <th scope="col">Ticker</th>
+                                <th scope="col">Volume</th>
+                                <th scope="col">Cost Price</th>
+                                <th scope="col">Current Price</th>
+                                <th scope="col">% change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {stockData!== undefined && stockData.map((item, index) => {
+                                return(
+                                <tr>
+                                    <td>{item.Symbol}</td>
+                                    <td>{item.Volume}</td>
+                                    <td>{item.CostPrice}</td>
+                                    <td>{closingPrices!== undefined && closingPrices[item.Symbol]}</td>
+                                    <td>{((closingPrices!== undefined ? (closingPrices[item.Symbol]-(item.CostPrice)):0) / (item.CostPrice)*100).toFixed(2)}%</td>
+                                </tr>
+                                )
+                                }
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="col">
+                    <table className="table caption-top">
+                        <caption>Crypto Currencies (price in $)</caption>
+                        <thead className="table-dark">
+                            <tr>
+                                <th scope="col">Ticker</th>
+                                <th scope="col">Volume</th>
+                                <th scope="col">Cost Price</th>
+                                <th scope="col">Current Price</th>
+                                <th scope="col">% change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cryptoData!== undefined && cryptoData.map((item, index) => {
+                                return(
+                                <tr>
+                                    <td>{item.name}</td>
+                                    <td>{item.Volume}</td>
+                                    <td>{item.CostPrice}</td>
+                                    <td>{cryptoPrices!== undefined && cryptoPrices[item.name]}</td>
+                                    <td>{((cryptoPrices!== undefined ? (cryptoPrices[item.name]-(item.CostPrice)):0) / (item.CostPrice)*100).toFixed(2)}%</td>
+                                </tr>
+                                )
+                                }
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     )
 
