@@ -40,7 +40,9 @@ const Upload = () => {
               onChange={(e) => {
                 setCurrentPortfolio(e.target.value);
               }}
-            >
+            >                  <option >
+            Select a portfolio
+          </option>
               {portfolios.map((portfolio, index) => {
                 return (
                   <option value={portfolio.id} key={index}>
