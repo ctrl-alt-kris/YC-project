@@ -4,8 +4,8 @@ import "./Home.css"
 const Home = () => {
 
     return(
-        <div className="d-flex justify-content-center">
-            <div className="card col-10 box">
+        <div className="d-flex">
+            <div className="col-12">
                 Home screen
             </div>
         </div>
