@@ -49,7 +49,7 @@ async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.add(user, models.User, db)
 
 
-@app.get("/get_user", tags=['user'])
+@app.get("/get_user", tags=['user'], response_model=schemas.User)
 async def get_user(id: int, db: Session = Depends(get_db)):
     return crud.get(id, models.User, db)
 
@@ -123,6 +123,7 @@ async def add_transaction(portfolio_id: int, transaction: schemas.TransactionCre
     transaction = crud.add(db=db, schema=transaction, model=models.Transaction, portfolio_id=portfolio_id)
     return transaction
 
+
 @app.delete('/transaction/{transaction_id}',tags=['transaction'])
 async def remove_transaction(transaction_id: int,  db: Session = Depends(get_db)):
     transaction = crud.delete(db=db, id=transaction_id, model=models.Transaction)
@@ -140,4 +141,4 @@ async def transactions_from_csv(portfolio_id:int,file: UploadFile = File(...),  
             value = transaction['Cost Price'].replace('.','').replace(',','.')
             kwargs = {'ticker': transaction['Symbol'], 'amount': amount, 'value': value, 'portfolio_id':portfolio_id}
             crud.add(schema=None, model=models.Transaction, db=db, **kwargs)
-    return {"message":"uploaded"}
+    return {"transactions":formatted_data}

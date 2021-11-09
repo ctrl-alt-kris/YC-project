@@ -4,3 +4,8 @@ body {
   font-family: sans-serif;
   background:#557a95
 }
+
+.btn-primary {
+  background-color: #5D5C61;
+  border-color: #5D5C61;
+}
