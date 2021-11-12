@@ -1,43 +1,25 @@
-import "./Sidebar.css";
-import React from "react";
-import { useNavigate } from "react-router";
-
-
+import './Sidebar.css'
+import { Link, Router } from 'react-router-dom';
 
 const Sidebar = () => {
-
-    let navigate = useNavigate();
-  
-    const menuOptions = [
-    {
-        title: "Home",
-        link: "/",
-    },
-    {
-        title:"Companies",
-        link:"companies",
-    },
-]
-
-const Clickhandler = (link) => {
-    navigate(link)
+    return(
+        
+        <div id="mySidebar" className="sidebar">
+            
+            
+            {/* <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Clients</a>
+            <a href="#">Contact</a> */}
+                <Link to="/">
+                <a class="nav-link">Home</a>
+                </Link>
+                <Link to="upload">
+                <a class="nav-link">Upload</a>
+                </Link>
+        </div>
+        
+    )
 }
 
-    return (
-      <React.Fragment>
-        <div className="side-bar">
-        {menuOptions.map((item, i) => {
-                return(
-                    <li className="nav-item m-2" key={i}>
-                        <span className="nav-link active" aria-current="page" onClick={() => Clickhandler(item.link)}>
-                            {item.title}
-                        </span>
-                    </li>
-                )
-            })}
-        </div>
-      </React.Fragment>
-    );
-  };
-
-  export default Sidebar
+export default Sidebar;

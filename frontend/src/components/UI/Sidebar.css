@@ -1,7 +1,7 @@
 /* The sidebar menu */
 .sidebar {
     height: 100%; /* 100% Full-height */
-    width: 5%; /* 0 width - change this with JavaScript */
+    width: 5rem; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
     top: 0;
@@ -14,12 +14,13 @@
   
   /* The sidebar links */
   .sidebar a {
-    padding: 8px 8px 8px 32px;
+    /* padding: 8px 8px 8px 32px; */
     text-decoration: none;
     font-size: 15px;
     color: #818181;
     display: block;
     transition: 0.3s;
+    text-align: center;
   }
   
   /* When you mouse over the navigation links, change their color */

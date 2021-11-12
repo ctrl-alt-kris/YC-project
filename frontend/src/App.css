@@ -9,3 +9,8 @@ body {
   background-color: #5D5C61;
   border-color: #5D5C61;
 }
+
+.main {
+  padding-left: 6rem;
+  padding-top: 4rem;
+}
