@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import Login from './Components/Pages/Login';
+import Sidebar from "./Components/Ui/Sidebar"
 import Home from './Components/Pages/Home';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { useState } from 'react';
@@ -25,15 +26,22 @@ function App() {
 
 
   return (
-    <div className="container">
-    
-      <Router>
-        <Routes>
-        <Route path="/upload" element={<Upload />}/>
-          <Route path="/" element={<Home />}/>
-        </Routes>
-      </Router>
-     
+    <div className="row">
+
+      
+        <Router>
+          <div className="col-2">
+            <Sidebar  />
+          </div>
+          <div className="col-10">
+            <Routes>
+              <Route path="/" element={<Home />}/>
+              <Route path="companies" element={<Home />}/>
+              <Route path="upload" element={<Upload />}/>
+            </Routes>
+          </div>
+        </Router>
+      
     </div>
   );
 }

@@ -15,7 +15,7 @@ const Login = (props) => {
 
     console.log(username, password)
     return(
-        <div className="d-flex justify-content-center">
+        <div className="d-flex col-12 justify-content-center">
             <div className="card box">
                 <form onSubmit={submitHandler} >
                     <h1>Login</h1>
