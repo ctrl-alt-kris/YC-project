@@ -10,8 +10,10 @@ class TransactionBase(pd.BaseModel):
     amount: float
     value: float
 
+
 class TransactionCreate(TransactionBase):
     pass
+
 
 class Transaction(TransactionBase):
     portfolio_id: int
@@ -35,6 +37,7 @@ class Portfolio(PortfolioBase):
 
     class Config:
         orm_mode = True
+        
 
 class PortfolioUpdate(BaseModel):
     portfolio_type: Optional[str] = None

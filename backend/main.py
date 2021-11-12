@@ -45,6 +45,7 @@ finnhub_client = finnhub.Client(api_key=API_KEY)
 
 
 ### USERS ####
+
 @app.post("/post_user", tags=['user'])
 async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.add(user, models.User, db)
@@ -65,50 +66,22 @@ async def delete_user(id: int, db: Session = Depends(get_db)):
     return crud.delete(id, models.User, db).dict()
 
 
-
-# @app.post("/post_user", tags=['user'])
-# async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-#     return models.User.create(db, **user.dict())
-
-
-# @app.get("/get_user", tags=['user'])
-# async def get_user(id: int, db: Session = Depends(get_db)):
-#     user = db.query(models.User).filter(models.User.id == id).first()
-#     if not user:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found.")
-#     return user
-
-
-# @app.put('/edit_user', tags=['user'])
-# async def edit_user(request: schemas.User, db: Session = Depends(get_db)):
-#     user = db.query(models.User).filter(models.User.id == request.id).first()
-#     if not user:
-#         raise HTTPException(status_code=status.HTTP_424_FAILED_DEPENDENCY, detail=f'User with id {request.id} not found.')
-#     user.update(request.dict(), synchronize_session=False)
-#     db.commit()
-#     return 'User updated.'
-
-
-# @app.delete('/delete_user', tags=['user'])
-# async def delete_user(id: int, db: Session = Depends(get_db)):
-#     user = db.query(models.User).filter(models.User.id == id).first()
-#     if not user:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found.")
-#     db.delete(user)
-#     db.commit()
-#     return 'User deleted.'
+### PORTFOLIO ###
 
 @app.post("/post_portfolio", tags=['portfolio'])
 async def add_new_portfolio(portfolio: schemas.PortfolioCreate, db: Session = Depends(get_db)):
     return crud.add(schema=portfolio, model=models.Portfolio, db=db)
 
+
 @app.get("/get_portfolio", tags=['portfolio'])
 async def get_portfolio(id: int, db: Session = Depends(get_db)):
     return crud.get(id, models.Portfolio, db)
 
+
 @app.patch('/edit_portfolio', response_model=schemas.Portfolio, tags=['portfolio'])
 async def edit_portfolio(id: int, request: schemas.PortfolioUpdate, db: Session = Depends(get_db)):
     return crud.edit(id, request, models.Portfolio, db)
+
 
 @app.delete('/delete_portfolio', tags=['portfolio'])
 async def delete_portfolio(id: int, db: Session = Depends(get_db)):
