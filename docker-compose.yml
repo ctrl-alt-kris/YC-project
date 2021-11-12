@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  frontend:
+    image: "yc-frontend:latest"
+    ports:
+      - "3000:3000"
+  backend:
+    image: "yc-backend:latest"
+    ports:
+      - "8000:8000"
