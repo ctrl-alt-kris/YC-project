@@ -22,8 +22,25 @@
     transition: 0.3s;
     text-align: center;
   }
+
+    /* The sidebar links */
+    .sidebar .selected a {
+      /* padding: 8px 8px 8px 32px; */
+      color:white;
+    }
   
   /* When you mouse over the navigation links, change their color */
   .sidebar a:hover {
     color: #f1f1f1;
+  }
+
+  .link-element {
+    height:5rem;
+    width:5rem;
+    padding:1rem 0rem;
+  }
+
+  .link-element.selected{
+    background-color:#5D5c61;
+    color:white;
   }
