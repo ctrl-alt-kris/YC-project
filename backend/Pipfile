@@ -12,6 +12,7 @@ finnhub-python = "*"
 aiofiles = "*"
 pandas = "*"
 python-jose = "*"
+pipfile = "*"
 
 [dev-packages]
 

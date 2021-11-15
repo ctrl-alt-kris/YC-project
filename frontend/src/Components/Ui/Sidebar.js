@@ -32,6 +32,7 @@ const Sidebar = () => {
 
         <div className="sidebar-brand">
             <GiArchBridge />
+
         </div>
         <hr style={{color: "white"}}/>
         <Link to="/">
@@ -58,7 +59,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </Link>
-        <Link to="/data">
+        <Link to="/upload">
             <div className="row">
                 <div className="col-2">
                     <div className="sidebar-icon">
