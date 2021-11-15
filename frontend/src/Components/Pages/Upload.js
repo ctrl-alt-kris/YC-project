@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import Modal from "../Ui/Modal";
 import "./Upload.css";
 
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [currentPortfolio, setCurrentPortfolio] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
 
   useEffect(() => {
     fetch("http://localhost:8000/get_user?id=1")
@@ -70,9 +73,8 @@ const Upload = () => {
         </form>
       )}
 
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddTransactionModal">
-        Launch demo modal
-      </button>
+      <button onClick={() => setShowModal(true)}>Show Modal</button>
+      <Modal show={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };
