@@ -26,15 +26,17 @@ const Clickhandler = (link) => {
     return (
       <React.Fragment>
         <div className="side-bar">
+            <ul className="nav">
         {menuOptions.map((item, i) => {
                 return(
                     <li className="nav-item m-2" key={i}>
-                        <span className="nav-link active" aria-current="page" onClick={() => Clickhandler(item.link)}>
+                        <span className={`nav-link active`} aria-current="page" onClick={() => Clickhandler(item.link)}>
                             {item.title}
                         </span>
                     </li>
                 )
             })}
+            </ul>
         </div>
       </React.Fragment>
     );
