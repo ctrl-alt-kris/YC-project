@@ -19,26 +19,34 @@ function HighestReturns() {
   // get all symbols in an array
   const stockSymbols = [];
 
-//   stockData.forEach((element) => {
-//     stockSymbols.push([
-//       element["Symbol"],
-//       element["CostPrice"],
-//       element["Volume"],
-//     ]);
-//   });
+  stockData.forEach((element) => {
+    stockSymbols.push([
+      element["Symbol"],
+      element["CostPrice"],
+      element["Volume"],
+    ]);
+  });
+
+// ROI = (((current price - purchase price) * volume) / (purchase price * volume)) * 100
+
+function calculateROI(currentPrice, purchasePrice, volume) {
+    return (((currentPrice - purchasePrice) * volume) / (purchasePrice * volume)) * 100
+}
 
   useEffect(() => {
     stockData.forEach((element) => {
       finnhubClient.quote(element["Symbol"], (error, data, response) => {
-        stockSymbols.push([
-          element["Symbol"],
-          element["CostPrice"],
-          element["Volume"],
-          data.c,
-        ]);
+          setQuotes({...element["Symbol"] = data.c})
       });
+      console.log(stockData);
     });
   }, []);
+
+  stockSymbols.forEach((element) => {
+      element.push(calculateROI(quotes[element], element[1], element[2]))
+  })
+
+  console.log(stockData);
 
   stockSymbols.sort((a, b) => (a[1] < b[1] ? 1 : -1));
 

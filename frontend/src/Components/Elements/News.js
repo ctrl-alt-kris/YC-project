@@ -33,7 +33,7 @@ function News() {
       setData(transformData(apidata.value));
       console.log("apidata :", apidata.value);
     } catch (err) {
-      debugger;
+      // debugger;
       console.error("fetch failed: %o", err);
     }
   }
