@@ -8,7 +8,7 @@ from . import schemas
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from passlib.context import CryptContext
 from jose import jwt
-from datetime import datetime
+from datetime import datetime, timedelta
 
 SECRET = "c6a912d7cb7244f16e2cd99a0cdc95b4618a5604046b32816a88e7d40430f16a"
 
@@ -40,14 +40,17 @@ class User(Base):
     firstName = sa.Column(sa.String, index=True)
     lastName = sa.Column(sa.String, index=True)
     email = sa.Column(sa.String, index=True)
-    password = sa.Column(sa.String, index=True)
+    hash_password = sa.Column(sa.String, index=True)
 
     portfolios = relationship("Portfolio", back_populates="users")
 
-
+    @staticmethod
+    def hash_password(password: str) -> str:
+        return password + " not really hashed"
+        
     @classmethod
     def create(cls, session: Session, **kwargs):
-        kwargs["password"] = pwd_context.hash(kwargs["password"])
+        kwargs["hash_password"] = pwd_context.hash(kwargs["hash_password"])
         return super(User, cls).create(session, **kwargs)
 
 
@@ -67,6 +70,24 @@ class User(Base):
             raise Exception("expired")
         return user
 
+    @classmethod
+    def login(cls, session: sa.orm.Session, username: str, password: str) -> schemas.Token:
+        user: User = (
+            session.query(cls)
+            .filter_by(username=username)
+            .filter_by(hashed_password=cls.hash_password(password))
+            .one()
+        )  # raise exception if none are found
+        # user = session.query(cls).first()
+
+        user.token = jwt.encode(
+            dict(exp=datetime.utcnow() + timedelta(minutes=15)),
+            SECRET,
+            algorithm="HS256",
+        )
+        session.commit()
+
+        return schemas.Token(access_token=user.token, token_type="bearer")
 
 
 class Portfolio(Base):

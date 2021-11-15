@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import List
 from sqlalchemy.orm import Session
 import finnhub
@@ -45,6 +46,52 @@ finnhub_client = finnhub.Client(api_key=API_KEY)
 
 
 ### USERS ####
+
+async def get_current_user(
+    token: str = Depends(OAuth2PasswordBearer(tokenUrl="login")),
+    session: Session = Depends(get_db),
+):
+    try:
+        return models.User.find_by_token(session, token)
+    except Exception as e:
+        # print(" #### %s" % e)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+def login(session: Session, username: str, password: str):
+    try:
+        return models.User.login(session, username, password)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post(
+    "/login",
+    summary="Get a token for your credentials",
+    tags=["Users"],
+    response_model=schemas.Token,
+)
+async def login_form(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    session: Session = Depends(get_db),
+):
+    return login(session, form_data.username, form_data.password)
+
+
+@app.post("/login_json", tags=["Users"], response_model=schemas.Token)
+async def login_json(
+    data: schemas.UserLogin,
+    session: Session = Depends(get_db),
+):
+    return login(session, data.username, data.password)
+
+@app.get("/users/me", tags=["Users"], response_model=schemas.User)
+async def read_users_me(
+    current_user: schemas.User = Depends(get_current_user),
+):
+    return current_user
 
 @app.post("/post_user", tags=['user'])
 async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):

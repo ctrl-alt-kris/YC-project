@@ -2,7 +2,9 @@ import pydantic as pd
 from typing import Optional, List
 from pydantic import BaseModel
 
-
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 
 class TransactionBase(pd.BaseModel):
@@ -57,9 +59,14 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: Optional[int]
     portfolios: List[Portfolio] = []
+    token: Optional[str]
 
     class Config:
         orm_mode=True
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
 
 
 class UserUpdate(BaseModel):
