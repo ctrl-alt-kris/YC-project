@@ -2,10 +2,17 @@
 import { useState } from "react"
 import "./Login.css"
 
+import Modal from "../Ui/Modal"
+
+
 const Login = (props) => {
     
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
+
+    //Modal state and events
+    const [showModal, updateShowModal] = useState(false);
+    const toggleModal = () => updateShowModal(state => !state);
 
     const submitHandler = (event) => {
         event.preventDefault()
@@ -25,7 +32,11 @@ const Login = (props) => {
                     <a className="forgot text-muted" >Forgot password?</a> 
                     <input type="submit" name="" value="Login" />
                 </form>
+                <button onClick={toggleModal}>Show Modal</button>
+                <Modal canShow={showModal} updateModalState={toggleModal} />
             </div>
+
+            
         </div>
     )
 }

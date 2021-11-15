@@ -1,26 +1,27 @@
+import React from "react";
 
+const modalStyles = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "100vw",
+  height: "100vh",
+  background: "blue"
+};
 
-const Modal = () => {
-
-<div className="modal fade" id="AddTransactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div className="modal-dialog" role="document">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+const Modal = ({ canShow, updateModalState }) => {
+  if (canShow) {
+    return (
+      <div style={modalStyles}>
+        <h1>I'm a Modal!</h1>
+        <button onClick={updateModalState}>Hide Me</button>
       </div>
-      <div className="modal-body">
-        ...
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-}
+    );
+  }
 
-export default Modal
+  return null;
+};
+
+export default Modal;
+
+
