@@ -30,9 +30,9 @@ const Sidebar = () => {
     return(
         <div id="mySidebar" className="sidebar">
 
-        {/* <div className="sidebar-brand">
+        <div className="sidebar-brand">
             <GiArchBridge />
-        </div> */}
+        </div>
         <hr style={{color: "white"}}/>
         <Link to="/">
             <div className="row">
