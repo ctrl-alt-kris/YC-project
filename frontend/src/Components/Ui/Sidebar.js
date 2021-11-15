@@ -8,7 +8,7 @@ const LinkElement = (props) => {
         <Link to={props.path}>
             <div className={`link-element ${props.selected ? "selected" : ""}`}>
             <FontAwesomeIcon icon={props.icon} size="lg"/>
-        <a class="nav-link">{props.name}</a>
+        <a className="nav-link">{props.name}</a>
             </div>
         </Link>
     )
@@ -25,12 +25,6 @@ const Sidebar = () => {
     return(
         
         <div id="mySidebar" className="sidebar">
-            
-            
-            {/* <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#">Contact</a> */}
                 <LinkElement path="/" name="Home" icon={faHome} selected={activePage === "home"}/>
                 <LinkElement path="upload" name="Upload" icon={faUpload} selected={activePage === "upload"}/>
         </div>

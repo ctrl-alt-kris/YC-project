@@ -1,51 +1,51 @@
 [
     {
-      "name": "bitcoin",
+      "Symbol": "bitcoin",
       "CostPrice": 110.98,
       "Volume": 5
     },
     {
-      "name": "ethereum",
+      "Symbol": "ethereum",
       "CostPrice": 956.43,
       "Volume": 3
     },
     {
-      "name": "cardano",
+      "Symbol": "cardano",
       "CostPrice": 20.98,
       "Volume": 56
     },
     {
-      "name": "solana",
+      "Symbol": "solana",
       "CostPrice": 121.34,
       "Volume": 12
     },
     {
-      "name": "tether",
+      "Symbol": "tether",
       "CostPrice": 107.67,
       "Volume": 16
     },
     {
-      "name": "uniswap",
+      "Symbol": "uniswap",
       "CostPrice": 4367.09,
       "Volume": 0.25
     },
     {
-      "name": "dogecoin",
+      "Symbol": "dogecoin",
       "CostPrice": 43567.56,
       "Volume": 0.01
     },
     {
-      "name": "litecoin",
+      "Symbol": "litecoin",
       "CostPrice": 228.94,
       "Volume": 3
     },
     {
-      "name": "chainlink",
+      "Symbol": "chainlink",
       "CostPrice": 7.67,
       "Volume": 67
     },
     {
-      "name": "polkadot",
+      "Symbol": "polkadot",
       "CostPrice": 12.35,
       "Volume": 45
     }
