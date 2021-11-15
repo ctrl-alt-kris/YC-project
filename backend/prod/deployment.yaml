@@ -1,0 +1,66 @@
+# Configure a persistent volume for postgres since we want to keep this data even if the postgres
+# pod is deleted.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: auth-db-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 128M
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/auth-db-pv"
+
+---
+
+# I don't full understand PersistentVolumeClaims, but it seems to describe how a PersistentVolume can be
+# used, such as access mode and storage. In addition the PersistentVolumeClaim seems to work like
+# Services, which provide access to a Pod.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: auth-db-pvc
+  labels:
+    type: local
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128M
+  volumeName: auth-db-pv
+  storageClassName: standard
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: auth-db-volume-mount
+              mountPath: /code/db
+      volumes:
+        - name: auth-db-volume-mount
+          persistentVolumeClaim:
+            claimName: auth-db-pvc
