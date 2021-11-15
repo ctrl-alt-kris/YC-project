@@ -13,7 +13,6 @@ api_key.apiKey = apiKey; // Replace this
 const finnhubClient = new finnhub.DefaultApi();
 
 function HighestReturns() {
-  const [current, setCurrent] = useState();
   const [quotes, setQuotes] = useState({});
   const stockData = mockDataStocks;
   // get all symbols in an array
@@ -27,28 +26,38 @@ function HighestReturns() {
     ]);
   });
 
-// ROI = (((current price - purchase price) * volume) / (purchase price * volume)) * 100
+  // ROI = (((current price - purchase price) * volume) / (purchase price * volume)) * 100
 
-function calculateROI(currentPrice, purchasePrice, volume) {
-    return (((currentPrice - purchasePrice) * volume) / (purchasePrice * volume)) * 100
-}
+  function calculateROI(currentPrice, purchasePrice, volume) {
+    return (
+      (((currentPrice - purchasePrice) * volume) / (purchasePrice * volume)) *
+      100
+    );
+  }
 
   useEffect(() => {
     stockData.forEach((element) => {
-      finnhubClient.quote(element["Symbol"], (error, data, response) => {
-          setQuotes({...element["Symbol"] = data.c})
+      let symbol = element["Symbol"];
+      finnhubClient.quote(symbol, (error, data, response) => {
+          console.log("in quotes: ", quotes);
+        setQuotes({ ...quotes, [symbol]: data.c });
       });
-      console.log(stockData);
     });
   }, []);
 
+  console.log("quotes: ", quotes);
+  console.log(stockSymbols);
+
   stockSymbols.forEach((element) => {
-      element.push(calculateROI(quotes[element], element[1], element[2]))
-  })
+    element.push(calculateROI(quotes[element["Symbol"]], element[1], element[2]));
+  });
+
+  console.log("With ROI added: ", stockSymbols);
 
   console.log(stockData);
 
   stockSymbols.sort((a, b) => (a[1] < b[1] ? 1 : -1));
+  console.log("THIS ONE HERE: ", stockSymbols);
 
   return (
     <div>
@@ -57,11 +66,11 @@ function calculateROI(currentPrice, purchasePrice, volume) {
           if (stockSymbols.indexOf(elem) < 10) {
             return (
               // <div key={elem[0]} style={{margin: "auto", borderStyle: "solid", borderWidth: "1px", padding: "10px"}}>
-              <div key={elem[0]} style={{ margin: "auto", padding: "10px" }}>
+              <div key={elem[1]} style={{ margin: "auto", padding: "10px" }}>
                 <div style={{ textAlign: "center", fontWeight: "bold" }}>
                   {elem[0]}
                 </div>
-                <div style={{ textAlign: "center" }}>${elem[1]}</div>
+                <div style={{ textAlign: "center" }}>{elem[1]}%</div>
               </div>
             );
           } else {
