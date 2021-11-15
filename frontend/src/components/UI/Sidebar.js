@@ -32,7 +32,6 @@ const Sidebar = () => {
 
         <div className="sidebar-brand">
             <GiArchBridge />
-
         </div>
         <hr style={{color: "white"}}/>
         <Link to="/">
