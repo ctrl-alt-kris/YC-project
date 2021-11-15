@@ -107,7 +107,7 @@ const Dashboard = () => {
     return(
         
             <div className="container">
-                <div class="card mt-5 shadow p-3 mb-2 bg-white rounded">
+                <div class="card mt-5 shadow p-3 mb-2 bg-white" style={{ borderRadius: "25px"}}>
                     <div class="card-body">
                         <h4>Portfolio overview</h4>
                         <h5>Starting Balance: {totalPortfolioCosts}</h5>
@@ -116,7 +116,7 @@ const Dashboard = () => {
                 </div>
             <div className="row">
                 <div className="col-6">
-                    <div className="card mt-2 shadow p-3 mb-5 bg-white rounded">
+                    <div className="card mt-2 shadow p-3 mb-5 bg-white" style={{ borderRadius: "25px"}}>
                     <table className="table caption-top">
                         <caption>Stocks / ETFs (price in $)</caption>
                         <thead className="table-dark">
@@ -146,7 +146,7 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className="col-6">
-                    <div className="card mt-2 shadow p-3 mb-5 bg-white rounded">
+                    <div className="card mt-2 shadow p-3 mb-5 bg-white" style={{ borderRadius: "25px"}}>
                     <table className="table caption-top">
                         <caption>Crypto Currencies (price in $)</caption>
                         <thead className="table-dark">
