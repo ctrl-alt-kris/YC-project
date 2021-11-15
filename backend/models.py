@@ -54,7 +54,7 @@ class User(Base):
 
 
 class Portfolio(Base):
-    portoflio_type = sa.Column(sa.String, nullable=False)
+    portfolio_type = sa.Column(sa.String, nullable=False)
     user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"), nullable=False)
     
     users = relationship("User", back_populates="portfolios")
@@ -66,7 +66,7 @@ class Portfolio(Base):
 
 class Transaction(Base):
     ticker = sa.Column(sa.String, nullable=False)
-    amount = sa.Column(sa.Integer, nullable=False)
+    amount = sa.Column(sa.Float, nullable=False)
     value = sa.Column(sa.Float, nullable=False)
 
     portfolio_id = sa.Column(sa.Integer, ForeignKey("portfolios.id"))

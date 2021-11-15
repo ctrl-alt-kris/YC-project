@@ -1,12 +1,13 @@
 
 import "./Home.css"
+import Dashboard from "./Dashboard"
 
 const Home = () => {
 
     return(
-        <div className="d-flex justify-content-center">
-            <div className="card col-10 box">
-                Home screen
+        <div className="d-flex">
+            <div className="col-12">
+                <Dashboard></Dashboard>
             </div>
         </div>
     )

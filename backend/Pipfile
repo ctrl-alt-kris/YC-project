@@ -7,11 +7,10 @@ name = "pypi"
 fastapi = {extras = ["all"], version = "*"}
 sqlalchemy = "*"
 passlib = "*"
-<<<<<<< HEAD
-=======
 python-dotenv = "*"
->>>>>>> 2b67aa512cbd52c1bcd4a35ef29318844d20164d
 finnhub-python = "*"
+aiofiles = "*"
+pandas = "*"
 
 [dev-packages]
 
