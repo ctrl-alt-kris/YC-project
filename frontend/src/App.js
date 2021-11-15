@@ -2,12 +2,13 @@ import "./App.css";
 import React from "react";
 import Login from "./Components/Pages/Login";
 import Dashboard from "./Components/Pages/Dashboard";
-import Navbar from "./Components/Ui/Navbar";
-import Sidebar from "./Components/Ui/Sidebar";
+import Navbar from "./Components/UI/Navbar";
+import Sidebar from "./Components/UI/Sidebar";
 import Home from "./Components/Pages/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Upload from "./Components/Pages/Upload";
+import Portfolio from "./Components/Pages/Portfolio"
 
 export const TokenContext = React.createContext(null);
 
@@ -48,7 +49,7 @@ function App() {
       <div className = "main">
         <Routes>
           <Route path="upload" element={<Upload />} />
-          <Route path="companies" element={<Home />} />
+          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>

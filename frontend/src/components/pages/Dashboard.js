@@ -1,8 +1,18 @@
+
 import mockDataStocks from "./mockDataStocks.json";
 import MockDataCrypto from "./MockDataCrypto.json";
 import { useState, useEffect } from "react";
 
+import "./Dashboard.css"
+import mockDataStocks from "./mockDataStocks.json"
+import MockDataCrypto from './MockDataCrypto.json'
+import { useState, useEffect} from 'react'
+import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
+import Piechart from "../UI/Piechart";
+
+
 const apiKey = "c64eft2ad3i8bn4fjpn0";
+
 
 //pass array to api request
 const finnhub = require("finnhub");
@@ -11,45 +21,23 @@ const api_key = finnhub.ApiClient.instance.authentications["api_key"];
 api_key.apiKey = apiKey; // Replace this
 const finnhubClient = new finnhub.DefaultApi();
 
+// get all symbols in an array
+const stockSymbols = [];
+const costs = []
+
+
+stockData.forEach(element => stockSymbols.push(element["Symbol"]))
+stockData.forEach(element => costs.push(element['CostPrice']*element["Volume"]))
+
+
+const totalStockCosts = costs.reduce(function(costs, b) { return costs + b; }, 0);
+
 const Dashboard = () => {
     const [stocks, setStocks] = useState([])
     const [cryptos, setCryptos] = useState([])
     const [stocksData, setStocksData] = useState([])
     const [cryptosData, setCryptosData] = useState([])
-  // query for each symbol (company) in portfolio
-//   const [quotes, setQuotes] = useState({});
-//   const [cryptos, setCryptos] = useState({});
-//   const [stockData, setStockData] = useState([]);
-//   const [cryptoData, setCryptoData] = useState([]);
-//   const [stockNames, setStockNames] = useState([])
-//   const [cryptoNames, setCryptoNames] = useState([])
-//   const [stockCosts, setStockCosts] = useState([])
-//   const [cryptoCosts, setCryptoCosts] = useState([])
-//   const [totalStockCosts, setTotalStockCosts] = useState(undefined)
-//   const [totalCryptoCosts, setTotalCryptoCosts] = useState(undefined)
-//   const [totalPortfolioCosts, setTotalPortfolioCosts] = useState(undefined)
-
-  // const stockData = mockDataStocks
-  // const cryptoData = MockDataCrypto
-
-  // get all symbols in an array
-  // const stockSymbols = [];
-  // const costs = []
-
-  // stockData.forEach(element => stockSymbols.push(element["Symbol"]))
-  // stockData.forEach(element => costs.push(element['CostPrice']*element["Volume"]))
-
-  // const totalStockCosts = costs.reduce(function(costs, b) { return costs + b; }, 0);
-
-  // const cryptoNames = []
-  // const cryptoCosts = []
-
-  // cryptoData.forEach(element => cryptoNames.push(element["Symbol"]))
-  // cryptoData.forEach(element => cryptoCosts.push(element['CostPrice']*element["Volume"]))
-
-  // const totalCryptoCosts = cryptoCosts.reduce(function(cryptoCosts, b) { return cryptoCosts + b; }, 0);
-
-  // const totalPortfolioCosts = (totalStockCosts + totalCryptoCosts).toFixed(2)
+  
 
   const fetchLiveDataStocks = (stocks) => {
     if (stocks && stocks.length > 0) {
@@ -62,6 +50,7 @@ const Dashboard = () => {
             stockData["currentValue"] =  closingPrice
             const difference =  ( closingPrice - stockData['CostPrice'])/ stockData['CostPrice']
             stockData["difference"] = Math.round(difference * 10000) / 100
+
 
             }
             console.log(stockData)
@@ -116,75 +105,74 @@ const Dashboard = () => {
     }
 },[cryptos])
 
-//   useEffect(() => {
-//     fetchPositions(3, stocks, setStocks);
-//     fetchPositions(5, cryptos, setCryptos)
-//   }, []);
+
+  
 
 
-//   //console.log({cryptos})
-//   // create object for all closing prices from response
-//   const closingPrices = {};
-//   const tickers = [];
-//   const prices = [];
-//   const differences = [];
+    return(
+        
+            <div className="container">
+                <div className="row">
+                <div class="card mt-5 shadow mb-1 bg-white" style={{borderRadius:"25px", width:"23rem", marginTop: "-20px"}}>
+                    <div class="card-body">
+                        <div className="card-icon">
+                            <FcBookmark />
+                        </div>
+                        <div className="card-title">
+                            Starting Balance
+                        </div>
+                        <div className="card-text">
+                            $677657
+                            {/* ${totalPortfolioCosts} */}
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-5 shadow mb-2 bg-white" style={{borderRadius:"25px", width:"23rem", marginTop: "-20px"}}>
+                    <div class="card-body">
+                    <div className="card-icon">
+                        <FcSalesPerformance />
+                        </div>
+                        <div className="card-title">
+                            Total gains / losses
+                        </div>
+                        <div className="card-text">
+                            $457476
+                            {/* ${totalPortfolioReturn} */}
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-5 shadow mb-2 bg-white" style={{borderRadius:"25px", width:"23rem", marginTop: "-20px"}}>
+                    <div class="card-body">
+                        <div className="card-icon">
+                            <FcComboChart />
+                        </div>
+                        <div className="card-title">
+                            % return
+                        </div>
+                        <div className="card-text">
+                            15%
+                            {/* {Math.round((totalPortfolioReturn - totalPortfolioCosts)/(totalPortfolioCosts) * 100)}% */}
+                        </div>
+                    </div>
+                </div>
+                </div>
+            <div className="row">
+                <div className="col-6">
+                    <div className="card mt-2 shadow p-3 mb-5 bg-white" style={{borderRadius:"25px"}}>
+                    <Piechart title={"Stock distribution (top 10 largest positions)"} data={stockData}/>
+                    </div>
+                </div>
+                <div className="col-6">
+                    <div className="card mt-2 shadow p-3 mb-5 bg-white" style={{borderRadius:"25px"}}>
+                    <Piechart title={"Crypto distribution (top 10 largest positions)"} data={cryptoData}/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    )
 
-//   for (let i = 0; i < stockNames.length; i++) {
-//     if (quotes[stockNames[i]] !== undefined && Object.keys(quotes[stockNames[i]]).includes("c")) {
-//       tickers.push(stockNames[i]);
-//       prices.push(quotes[stockNames[i]]["c"]);
-//       differences.push(
-//         (quotes[stockNames[i]]["c"] - stockData[i]["CostPrice"]) *
-//           stockData[i]["Volume"]
-//       );
-
-//       tickers.forEach((key, i) => (closingPrices[key] = prices[i]));
-//     }
-//   }
-
-//   const totalStockDifferences = differences.reduce(function (differences, b) {
-//     return differences + b;
-//   }, 0);
-
-//   // create object for all current crypto prices
-
-//   const cryptoPrices = {};
-//   const names = [];
-//   const cryptoPricesArray = [];
-//   const cryptoDifferences = [];
-
-// useEffect( () => {
-//     console.log("called", cryptoNames, cryptos)
-//   for (let i = 0; i < cryptoNames.length; i++) {
-//       console.log(cryptos[cryptoNames[i]])
-//     if (cryptos[cryptoNames[i]] !== undefined) {
-//       names.push(cryptoNames[i]);
-//       console.log(cryptos[cryptoNames[i]])
-//       cryptoPricesArray.push(cryptos[cryptoNames[i]][cryptoNames[i]]["usd"]);
-//       names.forEach((key, i) => (cryptoPrices[key] = cryptoPricesArray[i]));
-//       cryptoDifferences.push(
-//         (cryptos[cryptoNames[i]][cryptoNames[i]]["usd"] -
-//           cryptoData[i]["CostPrice"]) *
-//           cryptoData[i]["Volume"]
-//       );
-//       console.log(cryptoDifferences)
-//     }
-//   }
-// },[cryptoNames, cryptos])
-
-//   const totalCryptoDifferences = cryptoDifferences.reduce(function (
-//     cryptoDifferences,
-//     b
-//   ) {
-//     return cryptoDifferences + b;
-//   },
-//   0);
-
-//   const totalPortfolioReturn = (
-//     totalStockDifferences + totalCryptoDifferences
-//   ).toFixed(2);
-
-//   console.log(totalPortfolioReturn);
 
 const totalCosts = (investments => {
     let total = 0

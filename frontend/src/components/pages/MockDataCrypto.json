@@ -2,12 +2,12 @@
     {
       "Symbol": "bitcoin",
       "CostPrice": 110.98,
-      "Volume": 5
+      "Volume": 3
     },
     {
       "Symbol": "ethereum",
       "CostPrice": 956.43,
-      "Volume": 3
+      "Volume": 9
     },
     {
       "Symbol": "cardano",
@@ -27,12 +27,12 @@
     {
       "Symbol": "uniswap",
       "CostPrice": 4367.09,
-      "Volume": 0.25
+      "Volume": 9
     },
     {
       "Symbol": "dogecoin",
       "CostPrice": 43567.56,
-      "Volume": 0.01
+      "Volume": 2
     },
     {
       "Symbol": "litecoin",
@@ -42,11 +42,11 @@
     {
       "Symbol": "chainlink",
       "CostPrice": 7.67,
-      "Volume": 67
+      "Volume": 5
     },
     {
       "Symbol": "polkadot",
       "CostPrice": 12.35,
-      "Volume": 45
+      "Volume": 21
     }
   ]

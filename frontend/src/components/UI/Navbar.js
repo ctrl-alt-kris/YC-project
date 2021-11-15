@@ -1,28 +1,20 @@
-import { Link } from "react-router-dom";
-import './Navbar.css'
-const Navbar = () => {
-    return (
-        <div>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
-            <div class="container-fluid">
-            <a class="navbar-brand" href="#">Dashboard</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Logout</a>
-                </li>
-                </ul>
+import "./Navbar.css"
+import { VscAccount } from "react-icons/vsc"
+
+const Header = () => {
+    return(
+      
+        <div className="normal-header-container">
+           <nav class="navbar navbar-expand-lg navbar-light">
+            <div className="navbar-brand">Portfolio</div>
+              <div className="navbar-logo">
+              <VscAccount />
             </div>
-            </div>
-            </nav>
+          </nav>
+          <hr style={{ marginTop: "-10px"}}/>
         </div>
+        
     )
 }
 
-export default Navbar;
+export default Header;
