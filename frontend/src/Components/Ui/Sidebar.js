@@ -13,7 +13,7 @@ const LinkElement = (props) => {
         <Link to={props.path}>
             <div className={`link-element ${props.selected ? "selected" : ""}`}>
             <FontAwesomeIcon icon={props.icon} size="lg"/>
-        <a class="nav-link">{props.name}</a>
+        <a className="nav-link">{props.name}</a>
             </div>
         </Link>
     )
@@ -29,6 +29,7 @@ const Sidebar = () => {
     }
     return(
         <div id="mySidebar" className="sidebar">
+
         <div className="sidebar-brand">
             <GiArchBridge />
         </div>

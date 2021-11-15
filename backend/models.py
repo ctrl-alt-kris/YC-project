@@ -7,6 +7,10 @@ from typing import Optional
 from . import schemas
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from passlib.context import CryptContext
+from jose import jwt
+from datetime import datetime
+
+SECRET = "c6a912d7cb7244f16e2cd99a0cdc95b4618a5604046b32816a88e7d40430f16a"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -50,6 +54,18 @@ class User(Base):
     @classmethod
     def verify_password(cls, password):
         return pwd_context.verify(password, cls.password)
+
+    @classmethod
+    def find_by_token(cls, session: sa.orm.Session, token: str) -> "User":
+        user = (
+            session.query(cls).filter_by(token=token).one()
+        )  # raises exception if none are found
+        payload = jwt.decode(
+            token, SECRET, algorithms=["HS256"]
+        )  # raises exception when decode fails
+        if datetime.fromtimestamp(payload["exp"]) < datetime.now():
+            raise Exception("expired")
+        return user
 
 
 

@@ -94,14 +94,18 @@ async def get_transactions_by_portfolio(portfolio_id: int, db: Session = Depends
     new_transactions = []
     for transaction in transactions:
         ticker_key = 'Symbol'
-        if portfolio_type == 'Crypto':
-            ticker_key = 'name'
         new_transactions.append({
             'Volume': transaction.amount,
             ticker_key: transaction.ticker,
             'CostPrice': transaction.value
         })
     return new_transactions
+
+@app.get('/portfolio/{portfolio_id}/positions', tags=['position'])
+async def get_positions(portfolio_id:int, db: Session = Depends(get_db)):
+    positions = crud.get_positions(db=db, portfolio_id=portfolio_id)
+    print(positions)
+    return positions
 
 @app.post('/portfolio/{portfolio_id}/add-transaction',tags=['transaction'], response_model=schemas.Transaction)
 async def add_transaction(portfolio_id: int, transaction: schemas.TransactionCreate, db: Session = Depends(get_db)):
@@ -116,14 +120,18 @@ async def remove_transaction(transaction_id: int,  db: Session = Depends(get_db)
 
 @app.post("/upload-csv/{portfolio_id}")
 async def transactions_from_csv(portfolio_id:int,file: UploadFile = File(...),  db: Session = Depends(get_db)):
+    portfolio = crud.get(portfolio_id, models.Portfolio, db)
+    for transaction in portfolio.transactions:
+        crud.delete(transaction.id, models.Transaction, db)
     async with aiofiles.open(file.filename, 'wb') as out_file:
         content = await file.read()  # async read
         await out_file.write(content)  # async write
     df = pd.read_csv(file.filename, sep=";")
     formatted_data = df.to_dict('records')
+    print(formatted_data)
     for transaction in formatted_data:
-        amount = transaction['Volume'].replace('.','').replace(',','.')
-        value = transaction['Cost Price'].replace('.','').replace(',','.')
+        amount = str(transaction['Volume']).replace('.','').replace(',','.')
+        value = str(transaction['Cost Price']).replace('.','').replace(',','.')
         kwargs = {'ticker': transaction['Symbol'], 'amount': amount, 'value': value, 'portfolio_id':portfolio_id}
         crud.add(schema=None, model=models.Transaction, db=db, **kwargs)
     os.remove(file.filename)
