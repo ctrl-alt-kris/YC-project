@@ -2,8 +2,6 @@
 import { useState } from "react"
 import "./Login.css"
 
-import Modal from "../Ui/Modal"
-
 
 const Login = (props) => {
     
