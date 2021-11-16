@@ -7,7 +7,7 @@ const Home = () => {
     return(
         <div className="d-flex">
             <div className="col-12">
-                <Dashboard></Dashboard>
+                <Dashboard />
             </div>
         </div>
     )
