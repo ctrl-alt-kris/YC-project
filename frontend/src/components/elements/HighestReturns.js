@@ -3,7 +3,7 @@ import mockDataStocks from "../pages/mockDataStocks.json";
 import "./HighestReturns.css";
 import { useState, useEffect, useContext, useRef } from "react";
 
-const apiKey = "c65764qad3i9pn79lmc0";
+const apiKey = "c69rbnaad3idi8g5i3mg";
 
 //pass array to api request
 const finnhub = require("finnhub");
@@ -12,8 +12,8 @@ const api_key = finnhub.ApiClient.instance.authentications["api_key"];
 api_key.apiKey = apiKey; // Replace this
 const finnhubClient = new finnhub.DefaultApi();
 
-function HighestReturns() {
-  const [stockData, setStockData] = useState(mockDataStocks);
+function HighestReturns(props) {
+  const [stockData, setStockData] = useState(props.stocksData);
 
   // get current price for all stocks in stockData
   let currentPrices = {};
@@ -28,21 +28,18 @@ function HighestReturns() {
 
   useEffect(() => {
     stockData.forEach((element) => {
-      let symbol = element["Symbol"];
-      finnhubClient.quote(symbol, (error, data, response) => {
-        currentPrices[symbol] = data.c;
         element["ROI"] = calculateROI(
           currentPrices[element["Symbol"]],
           element["CostPrice"],
           element["Volume"]
         ).toFixed(2);
-        stockData.sort((a, b) => (a["ROI"] < b["ROI"] ? 1 : -1));
-        // setStockData([...stockData]);
-      });
+        //stockData.sort((a, b) => (a["ROI"] < b["ROI"] ? 1 : -1));
+        setStockData([...stockData]);
+        console.log(stockData);
     });
-  }, [currentPrices, stockData]);
+  }, []);
 
-  console.log("sorted: ", stockData);
+  // console.log("sorted: ", stockData);
 
   return (
     <div>

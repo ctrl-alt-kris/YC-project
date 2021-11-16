@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import './News.css';
+import "./News.css";
 
 function News() {
   const [data, setData] = useState([{ name: "test", url: "url" }]);
@@ -57,19 +57,7 @@ function News() {
 
   return (
     <div className="col-8 card mt-2 shadow p-3 mb-5 bg-white rounded">
-      <Carousel
-        autoPlay={true}
-        interval="3000"
-        showIndicators={false}
-        infiniteLoop
-        width="100%"
-        showArrows
-        stopOnHover
-        autoFocus={true}
-        swipeable={true}
-        showStatus={false}
-        maxHeight="25px"
-      >
+      <div>
         {data.map((item) => {
           return (
             <div>
@@ -79,7 +67,7 @@ function News() {
             </div>
           );
         })}
-      </Carousel>
+      </div>
       <form className="col-8 margin-auto padding-0">
         <label>Choose news region </label>
         <select onChange={regionHandler}>

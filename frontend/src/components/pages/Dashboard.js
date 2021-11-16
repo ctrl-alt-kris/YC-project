@@ -4,8 +4,9 @@ import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
 import Piechart from "../ui/Piechart";
 import { DataContext } from "../../utils/DataContext";
 import HighestReturns from "../elements/HighestReturns";
+import News from "../elements/News";
 
-const apiKey = "c65764qad3i9pn79lmc0";
+const apiKey = "c69rbnaad3idi8g5i3mg";
 
 //pass array to api request
 const finnhub = require("finnhub");
@@ -126,7 +127,8 @@ const Dashboard = () => {
 
   return (
     <div className="container">
-        <HighestReturns />
+        <HighestReturns stockdata={stocksData}/>
+        {/* <News /> */}
       <div className="row">
         <div
           class="card mt-3 shadow mb-1 bg-white"
