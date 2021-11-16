@@ -22,6 +22,10 @@ const Sidebar = () => {
     {
         setActivePage("portfolio")
     }
+    else if(location.pathname.includes("about"))
+    {
+        setActivePage("about")
+    }
     return(
         <div id="mySidebar" className="sidebar">
 

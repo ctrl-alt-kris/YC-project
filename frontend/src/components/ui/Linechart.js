@@ -58,7 +58,7 @@ const Linechart = (props) => {
 
 
     return(
-        <div className="my-line-chart" style={{width: "1050px", height: "300px"}}>
+        <div className="my-line-chart" style={{width: "1000px", height: "300px"}}>
             <Line data={data} options={options}></Line>
         </div>
     )
