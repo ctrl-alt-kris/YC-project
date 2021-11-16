@@ -9,21 +9,37 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Upload from "./components/pages/Upload";
 import Portfolio from "./components/pages/Portfolio"
-
-export const TokenContext = React.createContext(null);
+import { DataContext } from "./utils/DataContext";
 
 function App() {
-  const [auth, setAuth] = useState();
+  const [auth, setAuth] = useState({access_token:"", token_type:""});
+  const [error, setError] = useState("")
 
-  const login = (props) => {
+  const login = (data) => {
     //for now we set auth to token, usemutation should go here once done
     //return api_fetch("/login_json/", { method: "POST", body: props}).then((response) => setAuth(response.access_token));
-    setAuth("token");
-    console.log(auth);
+     fetch("http://localhost:8000/login_json",
+    {method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data)
+
+  }).then(res => res.json()).then(payload => {
+    if (Object.keys(payload).includes("access_token"))
+    {
+    setAuth(payload)
+    }
+    else
+    {
+      setError("username and password do not match")
+    }
+  })
   };
 
-  if (!auth) {
-    return <Login login={login} />;
+  if (!auth.access_token) {
+    return <Login login={login} error={error} />;
   }
 
   return (
@@ -43,8 +59,9 @@ function App() {
     //     </Router>
 
     <div className="App">
+      <DataContext.Provider value={{auth, setAuth}}>
       <Router>
-      <Navbar></Navbar>
+      <Navbar onLogout={() => setAuth({access_token:"", token_type:""})}></Navbar>
             <Sidebar></Sidebar>
       <div className = "main">
         <Routes>
@@ -58,6 +75,7 @@ function App() {
 
         {/* <Dashboard></Dashboard> */}
       </Router>
+      </DataContext.Provider>
     </div>
   );
 }

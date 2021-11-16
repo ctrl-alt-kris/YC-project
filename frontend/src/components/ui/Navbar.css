@@ -14,11 +14,14 @@
 
 .navbar-logo{
   margin-left: 80%;
-  font-size:40px;
+  /* font-size:40px; */
   margin-top: -10px;
-  
-  
 }
+
+.navbar-logo:hover{
+  cursor: pointer;
+}
+
 .form-inline, .my-2, .my-lg-0{
   font-size: 50px;
   width: 500px;

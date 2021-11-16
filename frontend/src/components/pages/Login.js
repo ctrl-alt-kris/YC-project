@@ -12,8 +12,6 @@ const Login = (props) => {
         let data = {username, password}
         props.login(data)
     }
-
-    console.log(username, password)
     return(
         <div className="d-flex col-12 justify-content-center">
             <div className="card box">
@@ -21,7 +19,8 @@ const Login = (props) => {
                     <h1>Login</h1>
                     <p className="text-muted"> Please enter your login and password!</p> 
                     <input type="text" name="" placeholder="Username" onChange={e => setUsername(e.target.value)}/> 
-                    <input type="password" name="" placeholder="Password" onChange={e => setPassword(e.target.value)}/> 
+                    <input type="password" name="" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+                    {props.error.length > 0 && <p>{props.error}</p>} 
                     <a className="forgot text-muted" >Forgot password?</a> 
                     <input type="submit" name="" value="Login" />
                 </form>

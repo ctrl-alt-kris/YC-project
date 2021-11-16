@@ -1,13 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./Upload.css";
+import { DataContext } from "../../utils/DataContext";
 
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [portfolios, setPortfolios] = useState([]);
   const [currentPortfolio, setCurrentPortfolio] = useState(null);
+  const {auth} = useContext(DataContext)
 
   useEffect(() => {
-    fetch("http://localhost:8000/get_user?id=1")
+    fetch("http://localhost:8000/users/me", {
+      headers: {
+        accept: "application/json",
+      'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth.access_token}`
+      }
+    })
       .then((res) => res.json())
       .then((payload) => {
         setPortfolios(payload["portfolios"]);
@@ -22,6 +30,10 @@ const Upload = () => {
     fetch(`http://localhost:8000/upload-csv/${currentPortfolio}`, {
       method: "POST",
       body: form,
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${auth.access_token}`
+      }
     });
   };
   return (
@@ -57,7 +69,7 @@ const Upload = () => {
               File
             </label>
             <input
-              className="form-control"
+              // className="form-control"
               type="file"
               id="positionsFile"
               onChange={(e) => setSelectedFile(e.target.files[0])}

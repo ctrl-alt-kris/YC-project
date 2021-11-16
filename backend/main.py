@@ -152,10 +152,10 @@ async def get_transactions_by_portfolio(portfolio_id: int, db: Session = Depends
         })
     return new_transactions
 
-@app.get('/portfolio/{portfolio_id}/positions', tags=['position'])
-async def get_positions(portfolio_id:int, db: Session = Depends(get_db)):
-    positions = crud.get_positions(db=db, portfolio_id=portfolio_id)
-    print(positions)
+@app.get('/portfolio/{portfolio_type}/positions', tags=['position'])
+async def get_positions(portfolio_type:str, db: Session = Depends(get_db),current_user: schemas.User = Depends(get_current_user)):
+    current_user_id = current_user.id
+    positions = crud.get_positions(db=db, portfolio_type=portfolio_type, user_id=current_user_id)
     return positions
 
 @app.post('/portfolio/{portfolio_id}/add-transaction',tags=['transaction'], response_model=schemas.Transaction)
@@ -170,8 +170,14 @@ async def remove_transaction(transaction_id: int,  db: Session = Depends(get_db)
     return transaction
 
 @app.post("/upload-csv/{portfolio_id}")
-async def transactions_from_csv(portfolio_id:int,file: UploadFile = File(...),  db: Session = Depends(get_db)):
+async def transactions_from_csv(portfolio_id:int,file: UploadFile = File(...),  db: Session = Depends(get_db),current_user: schemas.User = Depends(get_current_user)):
     portfolio = crud.get(portfolio_id, models.Portfolio, db)
+    if portfolio.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     for transaction in portfolio.transactions:
         crud.delete(transaction.id, models.Transaction, db)
     async with aiofiles.open(file.filename, 'wb') as out_file:
