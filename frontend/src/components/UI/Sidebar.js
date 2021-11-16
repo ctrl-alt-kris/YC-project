@@ -1,12 +1,9 @@
 import './Sidebar.css'
-import { Link, Router, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUpload } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react';
-import { FaDiceSix } from "react-icons/fa";
 import { TiChartPie, TiCogOutline, TiGroupOutline  } from "react-icons/ti";
 import { AiFillDatabase, AiFillHome } from "react-icons/ai";
-import {GiAbstract050, GiArchBridge} from 'react-icons/gi'
+import {GiArchBridge} from 'react-icons/gi'
 
 const LinkElement = (props) => {
     return (

@@ -21,7 +21,7 @@ const Dashboard = () => {
     const [stocksData, setStocksData] = useState([])
     const [cryptosData, setCryptosData] = useState([])
     const [symbol, setSymbol] = useState("")
-    const [historicData, setHistoricData] = useState({})
+    const [historicData, setHistoricData] = useState([])
   
 
     const fetchLiveDataStocks = (stocks) => {
@@ -124,7 +124,7 @@ const Dashboard = () => {
     const apiKey2 = "50223e7d79ac27d4cdf9b80be8ba5b83"
 
     const fetchHistoricalData = () => {
-        fetch(`http://api.marketstack.com/v1/eod?access_key=${apiKey2}&symbols=${symbol}`)
+        fetch(`http://api.marketstack.com/v1/eod?access_key=${apiKey2}&symbols=${symbol}&date_from=2020-11-16&date_to=2021-11-16&limit=300`)
         .then(res => res.json())
         .then((data) => setHistoricData(data.data))
     }
@@ -209,7 +209,9 @@ const Dashboard = () => {
                     </table>
                     </div>
                 </div>
-                <Linechart data={historicData}/>
+                <div className="card shadow bg-white" style={{borderRadius:"25px", width:"70rem", marginTop: "-30px"}}>
+                    <Linechart title={"Historical stock prices"} data={historicData}/>
+                </div>
             </div>
         </div>
         
