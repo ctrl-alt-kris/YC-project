@@ -66,7 +66,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </Link>
-        <Link to="/" className={ `${activePage==="about"? "active-link" : ""}`}>
+        <Link to="/about" className={ `${activePage==="about"? "active-link" : ""}`}>
             <div className="row">
                 <div className="col-2">
                     <div className="sidebar-icon">
@@ -91,6 +91,7 @@ const Sidebar = () => {
             </div>
         </Link> */}
     </div>
+    
 
         )
 }

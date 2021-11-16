@@ -9,7 +9,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Upload from "./components/pages/Upload";
 import Portfolio from "./components/pages/Portfolio"
+import About from "./components/pages/About";
+
+
 import { DataContext } from "./utils/DataContext";
+
+export const TokenContext = React.createContext(null);
 
 function App() {
   const [auth, setAuth] = useState({access_token:"", token_type:""});
@@ -74,6 +79,7 @@ function App() {
         <Routes>
           <Route path="upload" element={<Upload />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/about" element={<About />} />
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
         </Routes>

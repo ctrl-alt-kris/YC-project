@@ -5,6 +5,11 @@ name = "pypi"
 
 [packages]
 python-jose = "*"
+pipfile = "*"
+passlib = "*"
+aiofiles = "*"
+pandas = "*"
+finnhub-python = "*"
 
 [dev-packages]
 

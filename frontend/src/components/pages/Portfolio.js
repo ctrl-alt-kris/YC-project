@@ -3,6 +3,7 @@ import { useState, useEffect, useContext} from 'react'
 import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
 import { useLinkClickHandler } from "react-router-dom";
 import { DataContext } from "../../utils/DataContext";
+import Linechart from "../ui/Linechart";
 
 
 const apiKey = "c64eft2ad3i8bn4fjpn0"
@@ -23,6 +24,8 @@ const Dashboard = () => {
     const [stocksData, setStocksData] = useState([])
     const [cryptosData, setCryptosData] = useState([])
     const [symbol, setSymbol] = useState("")
+    const [historicData, setHistoricData] = useState([])
+    const [historicCrypto, setHistoricCrypto] = useState([])
     const {auth} = useContext(DataContext)
   
 
@@ -89,6 +92,7 @@ const fetchPositions = (portfolioType, data, setData) => {
         if (stocks.length > 0)
         {
             fetchLiveDataStocks(stocks)
+            
         }
     },[stocks])
 
@@ -99,30 +103,56 @@ const fetchPositions = (portfolioType, data, setData) => {
         }
     },[cryptos])
 
-    const totalCosts = (investments => {
-        let total = 0
-        investments.map(investment => {
-            total += investment.Volume * investment.CostPrice
-        })
-        return total
-    })
+    useEffect(() => {
+        fetchHistoricalData()
+    }, [symbol])
 
-    const totalGain = (investments) => {
-        let total = 0
-        investments.map(investment => {
-            total += investment.Volume * (investment.currentValue - investment.CostPrice)
-        })
-        return total
-    }
+    // useEffect(() => {
+    //     fetchHistoricCrypto()
+    // }, [symbol])
 
-    const convertToDollars = (number) => {
-        return `$${Math.round(number * 100)/100}`
-    }
 
     const clickHandler = (item) => {
         console.log(item)
         setSymbol(item)
     }
+
+    // api for historical stock data
+    const apiKey2 = "916d093761e0c97b409e89260083dd31"
+
+    const fetchHistoricalData = () => {
+        fetch(`http://api.marketstack.com/v1/eod?access_key=${apiKey2}&symbols=${symbol}&date_from=2020-11-16&date_to=2021-11-16&limit=300`)
+        .then(res => res.json())
+        .then((data) => setHistoricData(data.data))
+    }
+
+    // const apiKey3 = "OKY30MFBW4P3ZWFG"
+
+    // // const request = require('request');
+
+    // // replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
+    // const fetchHistoricCrypto = () => { 
+    //     fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${symbol}&apikey=${apiKey3}`)
+    //     .then(res => res.json())
+    //     .then((data) => setHistoricCrypto(data))
+    // }
+
+    // console.log({historicCrypto})
+    // // request.get({
+    // //     url: url,
+    // //     json: true,
+    // //     headers: {'User-Agent': 'request'}
+    // // }, (err, res, data) => {
+    // //     if (err) {
+    // //     console.log('Error:', err);
+    // //     } else if (res.statusCode !== 200) {
+    // //     console.log('Status:', res.statusCode);
+    // //     } else {
+    // //     // data is successfully parsed as a JSON object:
+    // //     console.log(data);
+    // //     }
+    // // });
+    
 
 
 
@@ -184,7 +214,7 @@ const fetchPositions = (portfolioType, data, setData) => {
                         {cryptosData !== undefined &&
                             cryptosData.map((item, index) => {
                                 return (
-                                <tr key={index}>
+                                <tr key={index} onClick={() => clickHandler(item.Symbol)}>
                                     <td>{item.Symbol}</td>
                                     <td>{item.Volume}</td>
                                     <td>{item.CostPrice.toFixed(2)}</td>
@@ -202,6 +232,9 @@ const fetchPositions = (portfolioType, data, setData) => {
                         </tbody>
                     </table>
                     </div>
+                </div>
+                <div className="card shadow bg-white" style={{borderRadius:"25px", width:"70rem", marginTop: "-30px"}}>
+                    <Linechart title={"Historical stock prices"} data={historicData} symbol={symbol}/>
                 </div>
             </div>
         </div>

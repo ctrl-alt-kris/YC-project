@@ -2,13 +2,16 @@ import "./Dashboard.css";
 import { useState, useEffect, useContext } from "react";
 import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
 import Piechart from "../ui/Piechart";
+
+
 import { DataContext } from "../../utils/DataContext";
 import { useNavigate } from "react-router-dom";
 import HighestReturns from "../elements/HighestReturns";
-import News from "../elements/News";
 
-const apiKey = "c69rbnaad3idi8g5i3mg";
 
+//const apiKey = "c69rbnaad3idi8g5i3mg";
+
+const apiKey = "c64eft2ad3i8bn4fjpn0";
 //pass array to api request
 const finnhub = require("finnhub");
 
