@@ -14,7 +14,7 @@ const Linechart = (props) => {
 
     if (historicData!==undefined && historicData.length!==0) {
         console.log(historicData)
-        historicData.forEach(element => lineData[element.date] = element.close)
+        historicData.forEach(element => lineData[(element.date).toString().slice(0,10)] = element.close)
         console.log(lineData)
     }
 
@@ -30,6 +30,7 @@ const Linechart = (props) => {
     const data = {
     labels: labels,
     datasets: [{
+        label: props.symbol,
         data: Object.values(lineData).reverse(),
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
@@ -57,7 +58,7 @@ const Linechart = (props) => {
 
 
     return(
-        <div className="my-line-chart" style={{width: "1000px", height: "300px"}}>
+        <div className="my-line-chart" style={{width: "1050px", height: "300px"}}>
             <Line data={data} options={options}></Line>
         </div>
     )
