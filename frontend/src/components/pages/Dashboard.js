@@ -156,7 +156,7 @@ const checkData = () => {
 
   return (
     <div className="container">
-        <HighestReturns />
+        <HighestReturns stocksData={stocksData}/>
       <div className="row">
         <div
           class="card mt-3 shadow mb-1 bg-white"
