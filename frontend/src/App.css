@@ -10,6 +10,16 @@ body {
   border-color: #5D5C61;
 }
 
+.btn-primary:hover {
+  background-color: #757575;
+  border-color: #5D5C61;
+}
+
+.btn-primary:active, .btn-primary:focus {
+  background-color: #757575;
+  border-color: #5D5C61;
+}
+
 .main {
   padding-left: 10rem;
   padding-top: 0rem;

@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
 import Piechart from "../ui/Piechart";
 import { DataContext } from "../../utils/DataContext";
+import { useNavigate } from "react-router-dom";
 import HighestReturns from "../elements/HighestReturns";
 import News from "../elements/News";
 
@@ -27,26 +28,54 @@ const totalStockCosts = costs.reduce(function (costs, b) {
 }, 0);
 
 const Dashboard = () => {
-  const [stocks, setStocks] = useState([]);
-  const [cryptos, setCryptos] = useState([]);
-  const [stocksData, setStocksData] = useState([]);
-  const [cryptosData, setCryptosData] = useState([]);
-  const { auth } = useContext(DataContext);
+    const [stocks, setStocks] = useState([])
+    const [cryptos, setCryptos] = useState([])
+    const [stocksData, setStocksData] = useState([])
+    const [cryptosData, setCryptosData] = useState([])
+    const {auth} = useContext(DataContext)
+    const navigate = useNavigate()
+  
+
+const checkData = () => {
+    fetch("http://localhost:8000/users/me", {
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.access_token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((payload) => {
+        const portfolios = payload["portfolios"]
+        console.log(portfolios)
+        const portfolio_types = portfolios.map(portfolio => portfolio.portfolio_type)
+        if (portfolios && portfolio_types.includes("Stocks") && portfolio_types.includes("Crypto"))
+        {
+          const stockTransActions = portfolios.filter(portfolio => portfolio.portfolio_type === "Stocks")[0]["transactions"]
+          const cryptoTransActions = portfolios.filter(portfolio => portfolio.portfolio_type === "Crypto")[0]["transactions"]
+        //   setPortfolios(payload["portfolios"]);
+          if (cryptoTransActions.length === 0 && stockTransActions.length === 0)
+          navigate("/upload")
+        }
+      });
+}
 
   const fetchLiveDataStocks = (stocks) => {
     if (stocks && stocks.length > 0) {
       stocks.forEach((stock) => {
         finnhubClient.quote(stock.Symbol, (error, data, response) => {
-          let stockData = { ...stock };
-          if (Object.keys(data).includes("c")) {
-            const closingPrice = data["c"];
-            stockData["currentValue"] = closingPrice;
-            const difference =
-              (closingPrice - stockData["CostPrice"]) / stockData["CostPrice"];
-            stockData["difference"] = Math.round(difference * 10000) / 100;
-          }
+            let stockData = {...stock}
+            if ( data && Object.keys(data).includes("c"))
+            {
+            const closingPrice = data["c"]
+            stockData["currentValue"] =  closingPrice
+            const difference =  ( closingPrice - stockData['CostPrice'])/ stockData['CostPrice']
+            stockData["difference"] = Math.round(difference * 10000) / 100
 
-          setStocksData((prevState) => [...prevState, stockData]);
+
+            }
+            
+            setStocksData(prevState => [...prevState, stockData])
         });
       });
     }
@@ -88,9 +117,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchPositions("Stocks", stocks, setStocks);
-    fetchPositions("Crypto", cryptos, setCryptos);
-  }, []);
+      checkData()
+      fetchPositions("Stocks", stocks, setStocks)
+      fetchPositions("Crypto", cryptos, setCryptos)
+  }, [])
 
   useEffect(() => {
     if (stocks.length > 0) {
@@ -127,8 +157,7 @@ const Dashboard = () => {
 
   return (
     <div className="container">
-        <HighestReturns stockdata={stocksData}/>
-        {/* <News /> */}
+        <HighestReturns stocksData={stocksData}/>
       <div className="row">
         <div
           class="card mt-3 shadow mb-1 bg-white"

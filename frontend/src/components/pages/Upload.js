@@ -22,7 +22,17 @@ const Upload = () => {
     })
       .then((res) => res.json())
       .then((payload) => {
-        setPortfolios(payload["portfolios"]);
+        const portfolios = payload["portfolios"]
+        console.log(portfolios)
+        const portfolio_types = portfolios.map(portfolio => portfolio.portfolio_type)
+        if (portfolios && portfolio_types.includes("Stocks") && portfolio_types.includes("Crypto"))
+        {
+          // const stockTransActions = portfolios.filter(portfolio => portfolio.portfolio_type === "Stocks")[0]["transactions"]
+          // const cryptoTransActions = portfolios.filter(portfolio => portfolio.portfolio_type === "Crypto")[0]["transactions"]
+          setPortfolios(payload["portfolios"]);
+          // if (cryptoTransActions.length === 0 && stockTransActions.length === 0)
+          // navigate("/upload")
+        }
       });
   }, []);
 
