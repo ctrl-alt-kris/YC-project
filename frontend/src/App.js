@@ -1,14 +1,14 @@
 import "./App.css";
 import React from "react";
-import Login from "./Components/Pages/Login";
-import Dashboard from "./Components/Pages/Dashboard";
-import Navbar from "./Components/UI/Navbar";
-import Sidebar from "./Components/UI/Sidebar";
-import Home from "./Components/Pages/Home";
+import Login from "./components/pages/Login";
+import Dashboard from "./components/pages/Dashboard";
+import Navbar from "./components/ui/Navbar";
+import Sidebar from "./components/ui/Sidebar";
+import Home from "./components/pages/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import Upload from "./Components/Pages/Upload";
-import Portfolio from "./Components/Pages/Portfolio"
+import Upload from "./components/pages/Upload";
+import Portfolio from "./components/pages/Portfolio"
 
 export const TokenContext = React.createContext(null);
 

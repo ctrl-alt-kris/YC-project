@@ -32,7 +32,7 @@ const Piechart = (props) => {
         // These labels appear in the legend and in the tooltips when hovering different arcs
         labels: labels,
         datasets: [{
-            label: 'My First Dataset',
+            label:"dfd",
             data: shares,
             backgroundColor: [
                 '#003f5c',
@@ -58,12 +58,14 @@ const Piechart = (props) => {
                 text: props.title
             },
             tooltip:{
-                display: true
+                display: false
             },
             datalabels: {
-                display: true
+                display: false
             }
         },
+        responsive: true,
+        maintainAspectRatio:false
     }
 
 
@@ -71,9 +73,8 @@ const Piechart = (props) => {
 
 
     return(
-        <div>
-            <Pie data={data} options={options} 
-	></Pie>
+        <div className="my-chart" style={{width: "500px", height: "300px"}}>
+            <Pie data={data} options={options}></Pie>
         </div>
     )
 }

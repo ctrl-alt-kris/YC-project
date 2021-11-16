@@ -165,12 +165,12 @@ const convertToDollars = (number) => {
                 </div>
             <div className="row">
                 <div className="col-6">
-                    <div className="card mt-2 shadow p-3 mb-5 bg-white" style={{borderRadius:"25px"}}>
+                    <div className="card mt-2 shadow p-3 mb-5 bg-white" style={{borderRadius:"25px", width:"35rem"}}>
                     <Piechart title={"Stock distribution (top 10 largest positions)"} data={stocksData}/>
                     </div>
                 </div>
                 <div className="col-6">
-                    <div className="card mt-2 shadow p-3 mb-5 bg-white" style={{borderRadius:"25px"}}>
+                    <div className="card mt-2 shadow p-3 mb-5 bg-white" style={{borderRadius:"25px", width:"35rem"}}>
                     <Piechart title={"Crypto distribution (top 10 largest positions)"} data={cryptosData}/>
                     </div>
                 </div>
