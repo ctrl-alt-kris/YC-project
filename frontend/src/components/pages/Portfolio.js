@@ -32,7 +32,7 @@ const Dashboard = () => {
             finnhubClient.quote(stock.Symbol, (error, data, response) => {
                 if(data) {
                 let stockData = {...stock}
-                if (Object.keys(data).includes("c"))
+                if (data && Object.keys(data).includes("c"))
                 {
                 const closingPrice = data["c"]
                 stockData["currentValue"] =  closingPrice
