@@ -1,6 +1,10 @@
 import "./Dashboard.css"
 import { useState, useEffect} from 'react'
 import Linechart from "../ui/Linechart";
+import { useState, useEffect, useContext} from 'react'
+import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
+import { useLinkClickHandler } from "react-router-dom";
+import { DataContext } from "../../utils/DataContext";
 
 
 const apiKey = "c64eft2ad3i8bn4fjpn0"
@@ -22,6 +26,7 @@ const Dashboard = () => {
     const [cryptosData, setCryptosData] = useState([])
     const [symbol, setSymbol] = useState("")
     const [historicData, setHistoricData] = useState({})
+    const {auth} = useContext(DataContext)
   
 
     const fetchLiveDataStocks = (stocks) => {
@@ -63,17 +68,24 @@ const Dashboard = () => {
     })
 }
 
-    const fetchPositions = (portfolioId, data, setData) => {
-        fetch(`http://localhost:8000/portfolio/${portfolioId}/positions`)
-        .then((res) => res.json())
-        .then((payload) => {
-            setData(payload);
-        });
-    };
+const fetchPositions = (portfolioType, data, setData) => {
+    fetch(`http://localhost:8000/portfolio/${portfolioType}/positions`,
+    {
+        headers: {
+            accept: "application/json",
+          'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth.access_token}`
+          }
+    })
+      .then((res) => res.json())
+      .then((payload) => {
+        setData(payload);
+      });
+  };
 
     useEffect(() => {
-        fetchPositions(3, stocks, setStocks)
-        fetchPositions(5, cryptos, setCryptos)
+        fetchPositions("Stocks", stocks, setStocks)
+        fetchPositions("Crypto", cryptos, setCryptos)
     }, [])
 
     useEffect(() => {

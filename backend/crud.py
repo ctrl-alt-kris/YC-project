@@ -6,9 +6,13 @@ def get_transactions_from_portfolio(db: sa.orm.Session, portfolio_id:int):
     transactions = db.query(models.Transaction).filter_by(portfolio_id=portfolio_id).all()
     return transactions
 
-def get_positions(db: sa.orm.Session, portfolio_id:int):
-    transactions = db.query(models.Portfolio).filter_by(id=portfolio_id).first().transactions
+def get_positions(db: sa.orm.Session, portfolio_type:str, user_id:int):
+    portfolio = db.query(models.Portfolio).filter_by(portfolio_type=portfolio_type, user_id=user_id).first()
+    if not portfolio:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{id} not found.")
+    transactions = portfolio.transactions
     tickers = {transaction.ticker for transaction in transactions}
+    
     positions = []
     for ticker in tickers:
         transactions_by_ticker = db.query(models.Transaction).filter_by(ticker=ticker).all()
