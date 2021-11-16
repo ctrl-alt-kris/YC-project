@@ -2,7 +2,7 @@
 import "./Dashboard.css"
 import { useState, useEffect} from 'react'
 import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
-import Piechart from "../UI/Piechart";
+import Piechart from "../ui/Piechart";
 
 
 const apiKey = "c64eft2ad3i8bn4fjpn0";
