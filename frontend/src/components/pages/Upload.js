@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import Modal from "../ui/Modal";
 import "./Upload.css";
 import { DataContext } from "../../utils/DataContext";
+import { useNavigate } from "react-router";
 
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -9,6 +10,7 @@ const Upload = () => {
   const [currentPortfolio, setCurrentPortfolio] = useState(null);
   const { auth } = useContext(DataContext);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch("http://localhost:8000/users/me", {
@@ -36,6 +38,8 @@ const Upload = () => {
         accept: "application/json",
         Authorization: `Bearer ${auth.access_token}`,
       },
+    }).then(res => res.json()).then(payload => {
+      navigate("/home")
     });
   };
 
@@ -57,8 +61,10 @@ const Upload = () => {
   };
   return (
     <div className="card box">
-      <h1>Upload</h1>
-      <button className="btn btn-primary float-right" onClick={() => setShowModal(true)}>Add Transaction</button>
+      <div className="row">
+        <h1 className="col-8">Upload</h1>
+        <button className="btn btn-primary col-4" onClick={() => setShowModal(true)}>Add Transaction</button>
+      </div>
       {portfolios && portfolios.length > 0 && (
         <div className="row">
  
@@ -85,12 +91,10 @@ const Upload = () => {
                   })}
                 </select>
               </div>
-              <div className="mb-3">
-                <label for="positionsFile" className="form-label">
-                  File
-                </label>
+              <div className="mb-3 col-12">
+                
                 <input
-                  // className="form-control"
+                  className="form-control"
                   type="file"
                   id="positionsFile"
                   onChange={(e) => setSelectedFile(e.target.files[0])}
