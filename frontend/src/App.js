@@ -59,7 +59,7 @@ function App() {
     //       </div>
     //     </Router>
 
-    <div className="App">
+    <div className="App container">
       <DataContext.Provider value={{
         auth, 
         setAuth,
@@ -67,9 +67,10 @@ function App() {
         setActivePage
         }}>
       <Router>
-      <Navbar onLogout={() => setAuth({access_token:"", token_type:""})}></Navbar>
-            <Sidebar></Sidebar>
-      <div className = "main">
+        <Sidebar></Sidebar>
+      
+      <div className = "main col-11">
+        <Navbar onLogout={() => setAuth({access_token:"", token_type:""})}></Navbar>
         <Routes>
           <Route path="upload" element={<Upload />} />
           <Route path="/portfolio" element={<Portfolio />} />
