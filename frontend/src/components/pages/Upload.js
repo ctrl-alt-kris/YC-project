@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import Modal from './ui/Modal'
 import "./Upload.css";
 import { DataContext } from "../../utils/DataContext";
 
@@ -7,6 +8,8 @@ const Upload = () => {
   const [portfolios, setPortfolios] = useState([]);
   const [currentPortfolio, setCurrentPortfolio] = useState(null);
   const {auth} = useContext(DataContext)
+  const [showModal, setShowModal] = useState(false);
+
 
   useEffect(() => {
     fetch("http://localhost:8000/users/me", {
@@ -81,6 +84,9 @@ const Upload = () => {
           </button>
         </form>
       )}
+
+      <button onClick={() => setShowModal(true)}>Show Modal</button>
+      <Modal show={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };
