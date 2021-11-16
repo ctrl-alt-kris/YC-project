@@ -161,7 +161,7 @@ const checkData = () => {
       <div className="row">
         <div
           class="card mt-3 shadow mb-1 bg-white"
-          style={{ borderRadius: "25px", width: "23rem", marginTop: "-20px" }}
+          style={{ borderRadius: "25px", width: "30%", marginTop: "-20px" }}
         >
           <div class="card-body">
             <div className="card-icon">
@@ -177,7 +177,7 @@ const checkData = () => {
         </div>
         <div
           class="card mt-3 shadow mb-2 bg-white"
-          style={{ borderRadius: "25px", width: "23rem", marginTop: "-20px" }}
+          style={{ borderRadius: "25px", width: "30%", marginTop: "-20px" }}
         >
           <div class="card-body">
             <div className="card-icon">
@@ -191,7 +191,7 @@ const checkData = () => {
         </div>
         <div
           class="card mt-3 shadow mb-2 bg-white"
-          style={{ borderRadius: "25px", width: "23rem", marginTop: "-20px" }}
+          style={{ borderRadius: "25px", width: "30%", marginTop: "-20px" }}
         >
           <div class="card-body">
             <div className="card-icon">

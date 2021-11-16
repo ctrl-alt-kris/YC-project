@@ -1,6 +1,10 @@
 .card-icon{
     font-size: 50px;
-    margin: 10px;
+    margin: 5px;
+}
+
+.card-body{
+    padding: 0;
 }
 
 .card-title{
