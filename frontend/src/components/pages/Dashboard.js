@@ -4,6 +4,7 @@ import { useState, useEffect, useContext} from 'react'
 import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
 import Piechart from "../ui/Piechart";
 import { DataContext } from "../../utils/DataContext";
+import { useNavigate } from "react-router-dom";
 
 
 const apiKey = "c64eft2ad3i8bn4fjpn0";
@@ -33,14 +34,39 @@ const Dashboard = () => {
     const [stocksData, setStocksData] = useState([])
     const [cryptosData, setCryptosData] = useState([])
     const {auth} = useContext(DataContext)
+    const navigate = useNavigate()
   
+
+const checkData = () => {
+    fetch("http://localhost:8000/users/me", {
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.access_token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((payload) => {
+        const portfolios = payload["portfolios"]
+        console.log(portfolios)
+        const portfolio_types = portfolios.map(portfolio => portfolio.portfolio_type)
+        if (portfolios && portfolio_types.includes("Stocks") && portfolio_types.includes("Crypto"))
+        {
+          const stockTransActions = portfolios.filter(portfolio => portfolio.portfolio_type === "Stocks")[0]["transactions"]
+          const cryptoTransActions = portfolios.filter(portfolio => portfolio.portfolio_type === "Crypto")[0]["transactions"]
+        //   setPortfolios(payload["portfolios"]);
+          if (cryptoTransActions.length === 0 && stockTransActions.length === 0)
+          navigate("/upload")
+        }
+      });
+}
 
   const fetchLiveDataStocks = (stocks) => {
     if (stocks && stocks.length > 0) {
       stocks.forEach((stock) => {
         finnhubClient.quote(stock.Symbol, (error, data, response) => {
             let stockData = {...stock}
-            if (Object.keys(data).includes("c"))
+            if ( data && Object.keys(data).includes("c"))
             {
             const closingPrice = data["c"]
             stockData["currentValue"] =  closingPrice
@@ -90,6 +116,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+      checkData()
       fetchPositions("Stocks", stocks, setStocks)
       fetchPositions("Crypto", cryptos, setCryptos)
   }, [])
