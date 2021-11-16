@@ -9,9 +9,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Upload from "./components/pages/Upload";
 import Portfolio from "./components/pages/Portfolio"
-
-export const TokenContext = React.createContext(null);
 import { DataContext } from "./utils/DataContext";
+export const TokenContext = React.createContext(null);
+
 
 function App() {
   const [auth, setAuth] = useState({access_token:"", token_type:""});

@@ -1,5 +1,5 @@
 // symbol, cost-price*volume
-import mockDataStocks from "../Pages/mockDataStocks.json";
+import mockDataStocks from "../pages/mockDataStocks.json";
 import "./HighestReturns.css";
 import { useState, useEffect, useContext, useRef } from "react";
 
