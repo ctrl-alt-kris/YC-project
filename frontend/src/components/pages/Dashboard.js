@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import HighestReturns from "../elements/HighestReturns";
 
 
+
 //const apiKey = "c69rbnaad3idi8g5i3mg";
 
 const apiKey = "c64eft2ad3i8bn4fjpn0";
