@@ -68,7 +68,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </Link>
-        <Link to="/">
+        <Link to="/about">
             <div className="row">
                 <div className="col-2">
                     <div className="sidebar-icon">

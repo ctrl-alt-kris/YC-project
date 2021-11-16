@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Upload from "./components/pages/Upload";
 import Portfolio from "./components/pages/Portfolio"
+import About from "./components/pages/About";
 
 export const TokenContext = React.createContext(null);
 
@@ -50,6 +51,7 @@ function App() {
         <Routes>
           <Route path="upload" element={<Upload />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/about" element={<About />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
