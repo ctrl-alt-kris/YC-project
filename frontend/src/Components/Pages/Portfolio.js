@@ -80,6 +80,7 @@ const Dashboard = () => {
         if (stocks.length > 0)
         {
             fetchLiveDataStocks(stocks)
+            
         }
     },[stocks])
 
@@ -89,6 +90,10 @@ const Dashboard = () => {
             fetchLiveDataCrypto(cryptos)
         }
     },[cryptos])
+
+    useEffect(() => {
+        fetchHistoricalData()
+    }, [symbol])
 
     const totalCosts = (investments => {
         let total = 0
@@ -114,6 +119,16 @@ const Dashboard = () => {
         console.log(item)
         setSymbol(item)
     }
+
+    // api for historical stock data
+    const apiKey2 = "50223e7d79ac27d4cdf9b80be8ba5b83"
+
+    const fetchHistoricalData = () => {
+        fetch(`http://api.marketstack.com/v1/eod?access_key=${apiKey2}&symbols=${symbol}`)
+        .then(res => res.json())
+        .then((data) => console.log(data.data))
+    }
+    
 
 
 
