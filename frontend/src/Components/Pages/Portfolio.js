@@ -1,7 +1,6 @@
 import "./Dashboard.css"
 import { useState, useEffect} from 'react'
-import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
-import { useLinkClickHandler } from "react-router-dom";
+import Linechart from "../ui/Linechart";
 
 
 const apiKey = "c64eft2ad3i8bn4fjpn0"
@@ -22,6 +21,7 @@ const Dashboard = () => {
     const [stocksData, setStocksData] = useState([])
     const [cryptosData, setCryptosData] = useState([])
     const [symbol, setSymbol] = useState("")
+    const [historicData, setHistoricData] = useState({})
   
 
     const fetchLiveDataStocks = (stocks) => {
@@ -126,7 +126,7 @@ const Dashboard = () => {
     const fetchHistoricalData = () => {
         fetch(`http://api.marketstack.com/v1/eod?access_key=${apiKey2}&symbols=${symbol}`)
         .then(res => res.json())
-        .then((data) => console.log(data.data))
+        .then((data) => setHistoricData(data.data))
     }
     
 
@@ -209,6 +209,7 @@ const Dashboard = () => {
                     </table>
                     </div>
                 </div>
+                <Linechart data={historicData}/>
             </div>
         </div>
         
