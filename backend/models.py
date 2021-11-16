@@ -59,7 +59,7 @@ class User(Base):
         )  # raise exception if none are found
 
         user.token = jwt.encode(
-            dict(exp=datetime.utcnow() + timedelta(minutes=15)),
+            dict(exp=datetime.utcnow() + timedelta(minutes=60)),
             SECRET,
             algorithm="HS256",
         )

@@ -1,31 +1,26 @@
 import './Sidebar.css'
-import { Link, Router, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUpload } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react';
-import { FaDiceSix } from "react-icons/fa";
+import { Link, useLocation } from 'react-router-dom';
 import { TiChartPie, TiCogOutline, TiGroupOutline  } from "react-icons/ti";
 import { AiFillDatabase, AiFillHome } from "react-icons/ai";
-import {GiAbstract050, GiArchBridge} from 'react-icons/gi'
-
-const LinkElement = (props) => {
-    return (
-        <Link to={props.path}>
-            <div className={`link-element ${props.selected ? "selected" : ""}`}>
-            <FontAwesomeIcon icon={props.icon} size="lg"/>
-        <a className="nav-link">{props.name}</a>
-            </div>
-        </Link>
-    )
-}
+import { GiArchBridge} from 'react-icons/gi'
+import { useContext } from 'react';
+import { DataContext } from '../../utils/DataContext';
 
 const Sidebar = () => {
-    let activePage = "home"
+    const { activePage, setActivePage }  = useContext(DataContext)
     const location = useLocation()
 
-    if(location.pathname.includes("upload"))
+    if(location.pathname.includes("home"))
     {
-        activePage = "upload"
+        setActivePage("home")
+    }
+    else if(location.pathname.includes("upload"))
+    {
+        setActivePage("upload")
+    }
+    else if(location.pathname.includes("portfolio"))
+    {
+        setActivePage("portfolio")
     }
     return(
         <div id="mySidebar" className="sidebar">
@@ -35,9 +30,9 @@ const Sidebar = () => {
 
         </div>
         <hr style={{color: "white"}}/>
-        <Link to="/">
+        <Link to="/home" className={ `${activePage==="home"? "active-link" : ""}`}>
             <div className="row">
-                <div className="col-2">
+                <div className={`col-2`}>
                     <div className="sidebar-icon">
                         <AiFillHome />
                     </div>
@@ -47,7 +42,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </Link>
-        <Link to="/portfolio">
+        <Link to="/portfolio" className={ `${activePage==="portfolio"? "active-link" : ""}`}>
             <div className="row">
                 <div className="col-2">
                     <div className="sidebar-icon">
@@ -59,7 +54,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </Link>
-        <Link to="/upload">
+        <Link to="/upload" className={ `${activePage==="upload"? "active-link" : ""}`}>
             <div className="row">
                 <div className="col-2">
                     <div className="sidebar-icon">
@@ -71,7 +66,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </Link>
-        <Link to="/">
+        <Link to="/" className={ `${activePage==="about"? "active-link" : ""}`}>
             <div className="row">
                 <div className="col-2">
                     <div className="sidebar-icon">
@@ -83,7 +78,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </Link>
-        <Link to="/">
+        <Link to="/" className={ `${activePage==="settings"? "active-link" : ""}`}>
             <div className="row">
                 <div className="col-2">
                     <div className="sidebar-icon">

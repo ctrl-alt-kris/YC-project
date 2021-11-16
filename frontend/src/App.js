@@ -13,6 +13,7 @@ import { DataContext } from "./utils/DataContext";
 
 function App() {
   const [auth, setAuth] = useState({access_token:"", token_type:""});
+  const [activePage, setActivePage] = useState("home")
   const [error, setError] = useState("")
 
   const login = (data) => {
@@ -59,7 +60,12 @@ function App() {
     //     </Router>
 
     <div className="App">
-      <DataContext.Provider value={{auth, setAuth}}>
+      <DataContext.Provider value={{
+        auth, 
+        setAuth,
+        activePage,
+        setActivePage
+        }}>
       <Router>
       <Navbar onLogout={() => setAuth({access_token:"", token_type:""})}></Navbar>
             <Sidebar></Sidebar>
@@ -67,6 +73,7 @@ function App() {
         <Routes>
           <Route path="upload" element={<Upload />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
