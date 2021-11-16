@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background:#557a95
+  background:#f4f3ef
 }
 
 .btn-primary {
@@ -12,5 +12,5 @@ body {
 
 .main {
   padding-left: 6rem;
-  padding-top: 4rem;
+  padding-top: 0rem;
 }

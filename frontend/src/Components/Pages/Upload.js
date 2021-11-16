@@ -27,7 +27,7 @@ const Upload = () => {
   return (
     <div className="card box">
       <h1>Upload</h1>
-      {portfolios.length > 0 && (
+      {portfolios && portfolios.length > 0 && (
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="portfolios" className="form-label">

@@ -6,6 +6,20 @@ def get_transactions_from_portfolio(db: sa.orm.Session, portfolio_id:int):
     transactions = db.query(models.Transaction).filter_by(portfolio_id=portfolio_id).all()
     return transactions
 
+def get_positions(db: sa.orm.Session, portfolio_id:int):
+    transactions = db.query(models.Portfolio).filter_by(id=portfolio_id).first().transactions
+    tickers = {transaction.ticker for transaction in transactions}
+    positions = []
+    for ticker in tickers:
+        transactions_by_ticker = db.query(models.Transaction).filter_by(ticker=ticker).all()
+        total_amount = 0
+        total_value = 0
+        for transaction in transactions_by_ticker:
+            total_amount += transaction.amount
+            total_value += transaction.value * transaction.amount
+        positions.append({"Symbol":ticker,"CostPrice": total_value/total_amount, "Volume":total_amount})
+    return positions
+
 
 def add(schema, model, db, **kwargs):
     if schema is not None:
