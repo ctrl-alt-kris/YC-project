@@ -1,7 +1,9 @@
 import "./Dashboard.css"
-import { useState, useEffect} from 'react'
+import { useState, useEffect, useContext} from 'react'
+import { FcBookmark, FcSalesPerformance, FcComboChart } from "react-icons/fc";
+import { useLinkClickHandler } from "react-router-dom";
+import { DataContext } from "../../utils/DataContext";
 import Linechart from "../ui/Linechart";
-
 
 
 const apiKey = "c64eft2ad3i8bn4fjpn0"
@@ -24,6 +26,7 @@ const Dashboard = () => {
     const [symbol, setSymbol] = useState("")
     const [historicData, setHistoricData] = useState([])
     const [historicCrypto, setHistoricCrypto] = useState([])
+    const {auth} = useContext(DataContext)
   
 
     const fetchLiveDataStocks = (stocks) => {
@@ -32,7 +35,7 @@ const Dashboard = () => {
             finnhubClient.quote(stock.Symbol, (error, data, response) => {
                 if(data) {
                 let stockData = {...stock}
-                if (Object.keys(data).includes("c"))
+                if (data && Object.keys(data).includes("c"))
                 {
                 const closingPrice = data["c"]
                 stockData["currentValue"] =  closingPrice
@@ -65,17 +68,24 @@ const Dashboard = () => {
     })
 }
 
-    const fetchPositions = (portfolioId, data, setData) => {
-        fetch(`http://localhost:8000/portfolio/${portfolioId}/positions`)
-        .then((res) => res.json())
-        .then((payload) => {
-            setData(payload);
-        });
-    };
+const fetchPositions = (portfolioType, data, setData) => {
+    fetch(`http://localhost:8000/portfolio/${portfolioType}/positions`,
+    {
+        headers: {
+            accept: "application/json",
+          'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth.access_token}`
+          }
+    })
+      .then((res) => res.json())
+      .then((payload) => {
+        setData(payload);
+      });
+  };
 
     useEffect(() => {
-        fetchPositions(3, stocks, setStocks)
-        fetchPositions(5, cryptos, setCryptos)
+        fetchPositions("Stocks", stocks, setStocks)
+        fetchPositions("Crypto", cryptos, setCryptos)
     }, [])
 
     useEffect(() => {

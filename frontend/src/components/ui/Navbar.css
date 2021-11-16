@@ -14,23 +14,20 @@
 
 .navbar-logo{
   margin-left: 80%;
-  font-size:40px;
+  /* font-size:40px; */
   margin-top: -10px;
-  
-  
 }
+
+.navbar-logo:hover{
+  cursor: pointer;
+}
+
 .form-inline, .my-2, .my-lg-0{
-  font-size: 50px;
+  font-size: 25px;
   width: 500px;
   margin-left: -120px;
 }
 
 .form-control{
-  font-size: 50px;
-  height: 50px;
-}
-
-.form-control, .mr-sm-2{
-  margin-left: 5rem;
-  
+  font-size: 20px;
 }

@@ -8,7 +8,7 @@ from . import schemas
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from passlib.context import CryptContext
 from jose import jwt
-from datetime import datetime
+from datetime import datetime, timedelta
 
 SECRET = "c6a912d7cb7244f16e2cd99a0cdc95b4618a5604046b32816a88e7d40430f16a"
 
@@ -36,24 +36,36 @@ class Base(declarative_base()):
 
 
 class User(Base):
-    username = sa.Column(sa.String, unique=True, index=True)
-    firstName = sa.Column(sa.String, index=True)
-    lastName = sa.Column(sa.String, index=True)
-    email = sa.Column(sa.String, index=True)
-    password = sa.Column(sa.String, index=True)
+    email = sa.Column(sa.String, unique=True, index=True)
+    username = sa.Column(sa.String)
+    firstName = sa.Column(sa.String)
+    lastName = sa.Column(sa.String)
+    hashed_password = sa.Column(sa.String, nullable=False)
+    token = sa.Column(sa.String)
 
-    portfolios = relationship("Portfolio", back_populates="users")
+    portfolios = sa.orm.relationship("Portfolio", back_populates="users")
 
-
-    @classmethod
-    def create(cls, session: Session, **kwargs):
-        kwargs["password"] = pwd_context.hash(kwargs["password"])
-        return super(User, cls).create(session, **kwargs)
-
+    @staticmethod
+    def hash_password(password: str) -> str:
+        return password + " not really hashed"
 
     @classmethod
-    def verify_password(cls, password):
-        return pwd_context.verify(password, cls.password)
+    def login(cls, session: sa.orm.Session, username: str, password: str) -> schemas.Token:
+        user: User = (
+            session.query(cls)
+            .filter_by(username=username)
+            .filter_by(hashed_password=cls.hash_password(password))
+            .one()
+        )  # raise exception if none are found
+
+        user.token = jwt.encode(
+            dict(exp=datetime.utcnow() + timedelta(minutes=60)),
+            SECRET,
+            algorithm="HS256",
+        )
+        session.commit()
+
+        return schemas.Token(access_token=user.token, token_type="bearer")
 
     @classmethod
     def find_by_token(cls, session: sa.orm.Session, token: str) -> "User":
@@ -67,6 +79,11 @@ class User(Base):
             raise Exception("expired")
         return user
 
+    @classmethod
+    def create(cls, session: sa.orm.Session, **kwargs):
+        kwargs["hashed_password"] = cls.hash_password(kwargs.pop("password"))
+        new_user = super(User, cls).create(session, **kwargs)
+        return new_user
 
 
 class Portfolio(Base):

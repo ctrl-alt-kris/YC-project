@@ -11,20 +11,41 @@ import Upload from "./components/pages/Upload";
 import Portfolio from "./components/pages/Portfolio"
 import About from "./components/pages/About";
 
+
+import { DataContext } from "./utils/DataContext";
+
 export const TokenContext = React.createContext(null);
 
 function App() {
-  const [auth, setAuth] = useState();
+  const [auth, setAuth] = useState({access_token:"", token_type:""});
+  const [activePage, setActivePage] = useState("home")
+  const [error, setError] = useState("")
 
-  const login = (props) => {
+  const login = (data) => {
     //for now we set auth to token, usemutation should go here once done
     //return api_fetch("/login_json/", { method: "POST", body: props}).then((response) => setAuth(response.access_token));
-    setAuth("token");
-    console.log(auth);
+     fetch("http://localhost:8000/login_json",
+    {method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data)
+
+  }).then(res => res.json()).then(payload => {
+    if (Object.keys(payload).includes("access_token"))
+    {
+    setAuth(payload)
+    }
+    else
+    {
+      setError("username and password do not match")
+    }
+  })
   };
 
-  if (!auth) {
-    return <Login login={login} />;
+  if (!auth.access_token) {
+    return <Login login={login} error={error} />;
   }
 
   return (
@@ -43,15 +64,23 @@ function App() {
     //       </div>
     //     </Router>
 
-    <div className="App">
+    <div className="App container">
+      <DataContext.Provider value={{
+        auth, 
+        setAuth,
+        activePage,
+        setActivePage
+        }}>
       <Router>
-      <Navbar></Navbar>
-            <Sidebar></Sidebar>
-      <div className = "main">
+        <Sidebar></Sidebar>
+      
+      <div className = "main col-11">
+        <Navbar onLogout={() => setAuth({access_token:"", token_type:""})}></Navbar>
         <Routes>
           <Route path="upload" element={<Upload />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/about" element={<About />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
@@ -60,6 +89,7 @@ function App() {
 
         {/* <Dashboard></Dashboard> */}
       </Router>
+      </DataContext.Provider>
     </div>
   );
 }

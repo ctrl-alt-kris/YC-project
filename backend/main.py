@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import List
 from sqlalchemy.orm import Session
 import finnhub
@@ -46,9 +47,59 @@ finnhub_client = finnhub.Client(api_key=API_KEY)
 
 ### USERS ####
 
+async def get_current_user(
+    token: str = Depends(OAuth2PasswordBearer(tokenUrl="login")),
+    session: Session = Depends(get_db),
+):
+    try:
+        return models.User.find_by_token(session, token)
+    except Exception as e:
+        # print(" #### %s" % e)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+def login(session: Session, username: str, password: str):
+    try:
+        return models.User.login(session, username, password)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post(
+    "/login",
+    summary="Get a token for your credentials",
+    tags=["Users"],
+    response_model=schemas.Token,
+)
+async def login_form(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    session: Session = Depends(get_db),
+):
+    return login(session, form_data.username, form_data.password)
+
+
+@app.post("/login_json", tags=["Users"], response_model=schemas.Token)
+async def login_json(
+    data: schemas.UserLogin,
+    session: Session = Depends(get_db),
+):
+    return login(session, data.username, data.password)
+
+@app.get("/users/me", tags=["Users"], response_model=schemas.User)
+async def read_users_me(
+    current_user: schemas.User = Depends(get_current_user),
+):
+    return current_user
+
 @app.post("/post_user", tags=['user'])
 async def add_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    return crud.add(user, models.User, db)
+    new_user =  crud.add(user, models.User, db)
+    portfolio_details = [schemas.PortfolioCreate(portfolio_type='Stocks', user_id=new_user.id),schemas.PortfolioCreate(portfolio_type='Crypto', user_id=new_user.id)]
+    for portfolio in portfolio_details:
+        crud.add(portfolio, models.Portfolio, db)
+    return new_user
 
 
 @app.get("/get_user", tags=['user'], response_model=schemas.User)
@@ -63,7 +114,7 @@ async def edit_user(id: int, request: schemas.UserUpdate, db: Session = Depends(
 
 @app.delete('/delete_user', tags=['user'])
 async def delete_user(id: int, db: Session = Depends(get_db)):
-    return crud.delete(id, models.User, db).dict()
+    return crud.delete(id, models.User, db)
 
 
 ### PORTFOLIO ###
@@ -101,10 +152,10 @@ async def get_transactions_by_portfolio(portfolio_id: int, db: Session = Depends
         })
     return new_transactions
 
-@app.get('/portfolio/{portfolio_id}/positions', tags=['position'])
-async def get_positions(portfolio_id:int, db: Session = Depends(get_db)):
-    positions = crud.get_positions(db=db, portfolio_id=portfolio_id)
-    print(positions)
+@app.get('/portfolio/{portfolio_type}/positions', tags=['position'])
+async def get_positions(portfolio_type:str, db: Session = Depends(get_db),current_user: schemas.User = Depends(get_current_user)):
+    current_user_id = current_user.id
+    positions = crud.get_positions(db=db, portfolio_type=portfolio_type, user_id=current_user_id)
     return positions
 
 @app.post('/portfolio/{portfolio_id}/add-transaction',tags=['transaction'], response_model=schemas.Transaction)
@@ -119,8 +170,14 @@ async def remove_transaction(transaction_id: int,  db: Session = Depends(get_db)
     return transaction
 
 @app.post("/upload-csv/{portfolio_id}")
-async def transactions_from_csv(portfolio_id:int,file: UploadFile = File(...),  db: Session = Depends(get_db)):
+async def transactions_from_csv(portfolio_id:int,file: UploadFile = File(...),  db: Session = Depends(get_db),current_user: schemas.User = Depends(get_current_user)):
     portfolio = crud.get(portfolio_id, models.Portfolio, db)
+    if portfolio.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     for transaction in portfolio.transactions:
         crud.delete(transaction.id, models.Transaction, db)
     async with aiofiles.open(file.filename, 'wb') as out_file:
